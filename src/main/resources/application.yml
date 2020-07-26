@@ -1,0 +1,51 @@
+# 严肃声明：
+# 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
+# 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
+# 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
+# Copyright (c) 2020 十三 all rights reserved.
+# 版权所有，侵权必究！
+server:
+  port: 27019
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lhl-basic?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    validationQueryTimeout: 10000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+# mybatis config
+# logging.level.ltd.newbee.mall.dao=debug
+secret:
+  key: Jwqjy^x,?>0  #token验证密钥
+  issuer: zhyy  #JWT的签发者，是否使用是可选的
+  subject: all #JWT所面向的用户，是否使用是可选的
+  ttlMillis: 300000 #失效时间  时效5分钟   单位：毫秒
+  bttlMillis: 14400000 #后台失效时间  时效4小时   单位：毫秒
+mybatis:
+  config-location: mapper/*Mapper.xml

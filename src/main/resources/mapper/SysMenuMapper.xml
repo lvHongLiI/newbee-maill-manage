@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.SysMenuMapper.xml">
+ <resultMap id="base" type="com.lvhongli.entity.SysMenu">
+     <result column="access_url" property="accessUrl"></result>
+     <result column="p_id" property="pId"></result>
+ </resultMap>
+    <select id="delete" resultType="int">
+        delete  from sys_menu where id=#{id} or p_id=#{id};
+    </select>
+
+    <select id="find" resultMap="base" parameterType="com.lvhongli.pojo.MenuParam">
+        select * from sys_menu
+        <where>
+            <if test="name!=null and name!=''">
+                name like concat(concat('%', #{name}), '%');
+            </if>
+
+            <if test="pId!=null ">
+                pId =${pId}
+            </if>
+
+            <if test="accessUrl!=null and accessUrl!=''">
+                name like concat(concat('%', #{accessUrl}), '%');
+            </if>
+        </where>
+    </select>
+
+    <select id="getOneLevelMenu" resultMap="base">
+        select * from sys_menu where p_id=0;
+    </select>
+</mapper>
