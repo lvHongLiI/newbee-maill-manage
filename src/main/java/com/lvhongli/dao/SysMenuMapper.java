@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface SysMenuMapper extends MyBaseMapper<SysMenu> {
 
-    int delete(Integer id);
-
+    int deleteByIdOrPId(Integer id);
 
     List<SysMenu> find(MenuParam menuParam);
 

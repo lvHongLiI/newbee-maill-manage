@@ -30,8 +30,8 @@ import javax.servlet.http.HttpSession;
  * @link https://github.com/newbee-ltd
  */
 @Controller
-@RequestMapping("/SysUser")
-public class AdminController {
+@RequestMapping("/admin")
+public class AdminUserController {
 
     @Autowired
     private TokenUtil tokenUtil;

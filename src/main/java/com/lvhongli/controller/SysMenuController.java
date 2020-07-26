@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("menu")
 public class SysMenuController {
 
@@ -17,7 +17,13 @@ public class SysMenuController {
     private SysMenuService service;
 
 
+    @RequestMapping({"/index",""})
+    public String menu(){
+        return "admin/newbee_mall_menu";
+    }
+
     @PostMapping("/add")
+    @ResponseBody
     public Result add(@RequestBody @Validated SysMenu menu){
          return service.add(menu);
     }
@@ -32,8 +38,9 @@ public class SysMenuController {
         return service.update(menu);
     }
 
-    @PostMapping("/find")
-    public Result find(@RequestBody MenuParam menuParam){
+    @GetMapping("/find")
+    @ResponseBody
+    public Result find(MenuParam menuParam){
         return service.find(menuParam);
     }
 

@@ -7,7 +7,7 @@ public class MenuParam extends Page {
 
     private String name;
 
-    private Integer pid;
+    private Integer pId;
 
     private String accessUrl;
 }

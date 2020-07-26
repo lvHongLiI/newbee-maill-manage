@@ -10,7 +10,7 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/lhl-basic?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: root
@@ -47,5 +47,3 @@ secret:
   subject: all #JWT所面向的用户，是否使用是可选的
   ttlMillis: 300000 #失效时间  时效5分钟   单位：毫秒
   bttlMillis: 14400000 #后台失效时间  时效4小时   单位：毫秒
-mybatis:
-  config-location: mapper/*Mapper.xml

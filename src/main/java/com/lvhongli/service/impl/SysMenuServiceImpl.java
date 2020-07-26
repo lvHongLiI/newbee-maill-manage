@@ -35,7 +35,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         if (menu==null){
             return new Result(500,"找不到待删除的对象");
         }
-        mapper.delete(id);
+        mapper.deleteByIdOrPId(id);
         return new Result(200,"删除成功！");
     }
 
