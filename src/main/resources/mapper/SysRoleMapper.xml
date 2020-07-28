@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.SysRoleMapper">
+    <resultMap id="base" type="com.lvhongli.entity.SysRole">
+        <result column="role_name" property="roleName"></result>
+    </resultMap>
+
+    <select id="findAll" resultMap="base">
+        select  * from sys_role
+        <where>
+            <if test="roleName !=null and roleName !=''">
+                 role_name like concat(concat('%', #{roleName}), '%');
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteAll">
+        delete from sys_role where 1=2
+        <foreach collection="ids" item="id" open=" or id in (" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findById" parameterType="int" resultMap="base">
+        select * from sys_role where id=#{id}
+    </select>
+</mapper>

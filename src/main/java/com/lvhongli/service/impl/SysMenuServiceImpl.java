@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.lvhongli.dao.SysMenuMapper;
 import com.lvhongli.entity.SysMenu;
 import com.lvhongli.pojo.MenuParam;
+import com.lvhongli.pojo.Page;
 import com.lvhongli.service.SysMenuService;
 import com.lvhongli.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public Result delete(Integer id) {
-        SysMenu menu = mapper.selectByPrimaryKey(id);
-        if (menu==null){
-            return new Result(500,"找不到待删除的对象");
-        }
-        mapper.deleteByIdOrPId(id);
+    public Result delete(Integer[] ids) {
+        mapper.deleteByIdOrPId(ids);
         return new Result(200,"删除成功！");
     }
 
@@ -57,8 +54,10 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public Result getOneLevelMenu() {
-        return new Result(200,"查询成功！",mapper.getOneLevelMenu());
+    public Result getLevelMenu(MenuParam menuParam) {
+        PageHelper.startPage(menuParam.getOffset(),menuParam.getLimit());
+        List<SysMenu> oneLevelMenu = mapper.getLevelMenu(menuParam.getPid());
+        return new Result(200,"查询成功！",new PageInfo<>(oneLevelMenu));
     }
 
     @Override

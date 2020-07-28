@@ -47,3 +47,11 @@ secret:
   subject: all #JWT所面向的用户，是否使用是可选的
   ttlMillis: 300000 #失效时间  时效5分钟   单位：毫秒
   bttlMillis: 14400000 #后台失效时间  时效4小时   单位：毫秒
+logging:
+  config: classpath:logback.xml
+pagehelper:   #Mybatis分页插件
+  dialect: com.github.pagehelper.PageHelper
+  autoDialect: true
+  closeConn: false
+  reasonable: false #分页参数合理化 默认为true
+

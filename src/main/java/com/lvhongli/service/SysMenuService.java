@@ -3,6 +3,7 @@ package com.lvhongli.service;
 
 import com.lvhongli.entity.SysMenu;
 import com.lvhongli.pojo.MenuParam;
+import com.lvhongli.pojo.Page;
 import com.lvhongli.util.Result;
 
 public interface SysMenuService {
@@ -16,10 +17,10 @@ public interface SysMenuService {
 
     /**
      * 删除方法
-     * @param id
+     * @param ids
      * @return
      */
-    Result delete(Integer id);
+    Result delete(Integer[] ids);
 
 
     /**
@@ -40,7 +41,7 @@ public interface SysMenuService {
      * 获取一级菜单
      * @return
      */
-    Result getOneLevelMenu();
+    Result getLevelMenu(MenuParam menuParam);
 
     /**
      * 根据id查询
@@ -48,4 +49,6 @@ public interface SysMenuService {
      * @return
      */
     Result findById(Integer id);
+
+
 }

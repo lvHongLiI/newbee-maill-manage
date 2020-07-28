@@ -1,15 +1,16 @@
 $(function () {
-    var categoryLevel = $("#categoryLevel").val();
-    var parentId = $("#parentId").val();
+    var level = $("#level").val();
+    var pid = $("#pid").val();
 
     $("#jqGrid").jqGrid({
-        url: '/menu/find',
+        url: '/menu/getLevelMenu?level='+level+'&pid='+pid,
         datatype: "json",
         colModel: [
             {label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true},
-            {label: '菜单名称', name: 'name', index: 'name', width: 240},
+            {label: '菜单名称', name: 'name', index: 'name', width: 150},
             {label: '访问路径', name: 'accessUrl', index: 'accessUrl', width: 120},
-            {label: '上级菜单', name: 'pId', index: 'pId', width: 120}
+            {label: '上级菜单', name: 'pid', index: 'pid', width: 120},
+            {label: '排序值', name: 'sort', index: 'sort', width: 60}
         ],
         height: 560,
         rowNum: 10,
@@ -55,7 +56,7 @@ function reload() {
 
 function categoryAdd() {
     reset();
-    $('.modal-title').html('分类添加');
+    $('.modal-title').html('菜单添加');
     $('#categoryModal').modal('show');
 }
 
@@ -63,15 +64,15 @@ function categoryAdd() {
  * 管理下级分类
  */
 function categoryManage() {
-    var categoryLevel = parseInt($("#categoryLevel").val());
-    var parentId = $("#parentId").val();
+    var level = parseInt($("#level").val());
+    var backPid=$("#backPid").val();
     var id = getSelectedRow();
     if (id == undefined || id < 0) {
         return false;
     }
-    if (categoryLevel == 1 || categoryLevel == 2) {
-        categoryLevel = categoryLevel + 1;
-        window.location.href = '/admin/categories?categoryLevel=' + categoryLevel + '&parentId=' + id + '&backParentId=' + parentId;
+    if (level == 1) {
+        level = level + 1;
+        window.location.href = '/menu/index?&level='+ level +'&pid='+id+'&backPid='+backPid;
     } else {
         swal("无下级分类", {
             icon: "warning",
@@ -83,11 +84,11 @@ function categoryManage() {
  * 返回上一层级
  */
 function categoryBack() {
-    var categoryLevel = parseInt($("#categoryLevel").val());
-    var backParentId = $("#backParentId").val();
-    if (categoryLevel == 2 || categoryLevel == 3) {
-        categoryLevel = categoryLevel - 1;
-        window.location.href = '/admin/categories?categoryLevel=' + categoryLevel + '&parentId=' + backParentId + '&backParentId=0';
+    var level = parseInt($("#level").val());
+    var backPid = $("#backPid").val();
+    if (level >1) {
+        level = level - 1;
+        window.location.href = '/menu/index?level=' + level + '&pid=' + backPid;
     } else {
         swal("无上级分类", {
             icon: "warning",
@@ -97,30 +98,31 @@ function categoryBack() {
 
 //绑定modal上的保存按钮
 $('#saveButton').click(function () {
-    var categoryName = $("#categoryName").val();
-    var categoryLevel = $("#categoryLevel").val();
-    var parentId = $("#parentId").val();
-    var categoryRank = $("#categoryRank").val();
-    if (!validCN_ENString2_18(categoryName)) {
+    var name = $("#name").val();//菜单名称
+    var accessUrl = $("#accessUrl").val();//访问路径
+    var sort = $("#sort").val();//排序值
+    var pId = $("#pid").val();//父id
+
+    if (!validCN_ENString2_18(name)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的分类名称！");
+        $('#edit-error-msg').html("请输入符合规范的菜单名称！");
     } else {
         var data = {
-            "categoryName": categoryName,
-            "categoryLevel": categoryLevel,
-            "parentId": parentId,
-            "categoryRank": categoryRank
+            "name": name,
+            "accessUrl": accessUrl,
+            "pid": pId,
+            "sort": sort
         };
-        var url = '/admin/categories/save';
+        var url = '/menu/add';
         var id = getSelectedRowWithoutAlert();
         if (id != null) {
-            url = '/admin/categories/update';
+            url = '/menu/update';
             data = {
-                "categoryId": id,
-                "categoryName": categoryName,
-                "categoryLevel": categoryLevel,
-                "parentId": parentId,
-                "categoryRank": categoryRank
+                "id": id,
+                "name": name,
+                "accessUrl": accessUrl,
+                "pid": pId,
+                "sort": sort
             };
         }
         $.ajax({
@@ -161,9 +163,10 @@ function categoryEdit() {
     var rowData = $("#jqGrid").jqGrid("getRowData", id);
     $('.modal-title').html('分类编辑');
     $('#categoryModal').modal('show');
-    $("#categoryId").val(id);
-    $("#categoryName").val(rowData.categoryName);
-    $("#categoryRank").val(rowData.categoryRank);
+    $("#menuId").val(id);
+    $("#name").val(rowData.name);
+    $("#accessUrl").val(rowData.accessUrl);
+    $("#sort").val(rowData.sort);
 }
 
 /**
@@ -172,17 +175,17 @@ function categoryEdit() {
  * 不过代码我也写了一部分，如果想保留删除功能的话可以在此代码的基础上进行修改。
  */
 function deleteCagegory() {
-    swal("未开放", {
-        icon: "warning",
-    });
-    return;
+    // swal("未开放", {
+    //     icon: "warning",
+    // });
+    // return;
     var ids = getSelectedRows();
     if (ids == null) {
         return;
     }
     swal({
         title: "确认弹框",
-        text: "确认要删除数据吗?",
+        text: "此操作会删除选择的菜单以及对应的子菜单 确认要删除数据吗? ",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -190,7 +193,7 @@ function deleteCagegory() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/categories/delete",
+                    url: "/menu/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -214,7 +217,7 @@ function deleteCagegory() {
 
 
 function reset() {
-    $("#categoryName").val('');
-    $("#categoryRank").val(0);
-    $('#edit-error-msg').css("display", "none");
+    $("#name").val('');
+    $("#accessUrl").val();
+    $("#sort").val();
 }

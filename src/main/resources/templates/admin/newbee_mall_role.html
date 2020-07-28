@@ -29,24 +29,26 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">菜单管理</h3>
+                        <h3 class="card-title">角色管理</h3>
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
-                            <button class="btn btn-info" onclick="categoryAdd()"><i
+                            <button class="btn btn-info" onclick="roleAdd()"><i
                                     class="fa fa-plus"></i>&nbsp;新增
                             </button>
-                            <button class="btn btn-info" onclick="categoryEdit()"><i
+                            <button class="btn btn-info" onclick="roleEdit()"><i
                                     class="fa fa-pencil-square-o"></i>&nbsp;修改
                             </button>
-                            <button class="btn btn-danger" onclick="deleteCagegory()"><i
+                            <button class="btn btn-danger" onclick="deleteRole()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除
                             </button>
                             <button class="btn btn-info" onclick="categoryManage()"><i
-                                    class="fa fa-list"></i>&nbsp;下级菜单管理
+                                    class="fa fa-list"></i>&nbsp;修改/添加菜单
                             </button>
-                            <button class="btn btn-info" onclick="categoryBack()"><i
-                                    class="fa fa-backward"></i>&nbsp;返回
+                            <br>
+                            <input  class="fa fa-list" type="text" name="roleName" id="roleName" placeholder="请输入名称" th:value="${name}">
+                            <button class="btn btn-info" onclick="query()"><i
+                                    class="fa fa-list"></i>&nbsp;查询
                             </button>
                         </div>
                         <br>
@@ -75,24 +77,19 @@
                                         错误信息展示栏。
                                     </div>
                                 </div>
-                                <input type="hidden" class="form-control" id="menuId" name="menuId">
-                                <input type="hidden" id="pid" th:value="${pid}">
-                                <input type="hidden" id="backPid" th:value="${backPid}">
-                                <input type="hidden" id="level" th:value="${level}">
+                                <input type="hidden" class="form-control" id="roleId" name="roleId">
+<!--                                <input type="hidden" id="pid" th:value="${pid}">-->
+<!--                                <input type="hidden" id="backPid" th:value="${backPid}">-->
+<!--                                <input type="hidden" id="level" th:value="${level}">-->
                                 <div class="form-group">
-                                    <label for="name" class="control-label">菜单名称:</label>
+                                    <label for="name" class="control-label">角色名称:</label>
                                     <input type="text" class="form-control" id="name" name="name"
-                                           placeholder="请输入菜单名称" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="accessUrl" class="control-label">访问路径:</label>
-                                    <input type="text" class="form-control" id="accessUrl" name="accessUrl"
-                                           placeholder="请输入访问路径" required="true">
+                                           placeholder="请输入角色名称" required="true">
                                 </div>
                                 <div class="form-group">
                                     <label for="sort" class="control-label">排序值:</label>
                                     <input type="number" class="form-control" id="sort" name="sort"
-                                           placeholder="请输入菜单排序值" required="true">
+                                           placeholder="请输入角色排序值" required="true">
                                 </div>
                             </form>
                         </div>
@@ -125,6 +122,6 @@
 <!-- sweetalert -->
 <script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
 <script th:src="@{/admin/dist/js/public.js}"></script>
-<script th:src="@{/admin/dist/js/newbee_mall_menu.js}"></script>
+<script th:src="@{/admin/dist/js/newbee_mall_role.js}"></script>
 </body>
 </html>

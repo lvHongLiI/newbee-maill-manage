@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.RoleMenuLinkMapper">
+
+    <delete id="deleteById">
+        delete from role_menu_link where ${column}
+        <foreach collection="ids" item="id"  open=" in ("  close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addAll">
+        insert into role_menu_link(role_id,menu_id)
+        <foreach collection="menusIds" item="menuId" separator="," open="values" close=";">
+            (#{roleId},#{menuId})
+        </foreach>
+    </insert>
+</mapper>

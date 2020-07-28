@@ -3,12 +3,17 @@
 <mapper namespace="com.lvhongli.dao.SysMenuMapper">
  <resultMap id="base" type="com.lvhongli.entity.SysMenu">
      <result column="access_url" property="accessUrl"></result>
-     <result column="p_id" property="pId"></result>
  </resultMap>
 
 
-    <delete id="deleteByIdOrPId" parameterType="int">
-        delete  from sys_menu where id=#{id} or p_id=#{id};
+    <delete id="deleteByIdOrPId" >
+        delete  from sys_menu where
+        <foreach collection="ids" item="id" open="id in(" close=")" separator=",">
+            #{id}
+        </foreach>
+        <foreach collection="ids" item="id" open="or pid in(" close=")" separator=",">
+            #{id}
+        </foreach>
     </delete>
 
     <select id="find" resultMap="base" >
@@ -28,7 +33,17 @@
         </where>
     </select>
 
-    <select id="getOneLevelMenu" resultMap="base">
-        select * from sys_menu where p_id=0;
+    <select id="getLevelMenu" resultMap="base" parameterType="int">
+        select * from sys_menu where pid=#{pid};
+    </select>
+
+    <select id="findByRoleIdExist" resultType="map">
+        select id,name, 0 as 'type' from sys_menu where id in (select menu_id from role_menu_link where role_id=#{id})
+        union all
+        select id,name, 1 as 'type' from sys_menu where id not in (select menu_id from role_menu_link where role_id=#{id})
+    </select>
+
+    <select id="findName" resultType="string">
+            select name  from sys_menu where id in (select menu_id from role_menu_link where role_id=#{id})
     </select>
 </mapper>

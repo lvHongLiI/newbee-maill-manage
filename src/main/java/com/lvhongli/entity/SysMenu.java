@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Table(name = "sys_menu")
+@Data
 public class SysMenu {
 
 
@@ -24,7 +24,10 @@ public class SysMenu {
     private String accessUrl;
 
     @ApiModelProperty(value = "父id",example = "12312321")
-    private Integer pId;
+    private Integer pid;
+
+    @ApiModelProperty(value = "排序值",example = "12")
+    private Integer sort;
 
     @ApiModelProperty(value = "子类",example = "1231")
     @Transient
