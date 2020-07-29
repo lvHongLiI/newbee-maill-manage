@@ -29,6 +29,9 @@ public class SysMenu {
     @ApiModelProperty(value = "排序值",example = "12")
     private Integer sort;
 
+    @ApiModelProperty(value = "级别",example = "1")
+    private Integer level;
+
     @ApiModelProperty(value = "子类",example = "1231")
     @Transient
     private List<SysMenu> children=new ArrayList<>();

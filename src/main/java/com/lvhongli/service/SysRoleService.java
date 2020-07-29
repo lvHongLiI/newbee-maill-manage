@@ -1,5 +1,6 @@
 package com.lvhongli.service;
 
+import com.lvhongli.entity.SysMenu;
 import com.lvhongli.entity.SysRole;
 import com.lvhongli.pojo.RoleParam;
 import com.lvhongli.util.Result;
@@ -17,5 +18,5 @@ public interface SysRoleService {
 
     Result addMenu(Integer roleId, Integer[] menusIds);
 
-    Result findById(Integer id);
+    SysRole findById(Integer rid);
 }

@@ -5,9 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.lvhongli.dao.SysMenuMapper;
 import com.lvhongli.entity.SysMenu;
 import com.lvhongli.pojo.MenuParam;
+import com.lvhongli.pojo.MenuVo;
 import com.lvhongli.pojo.Page;
 import com.lvhongli.service.SysMenuService;
 import com.lvhongli.util.Result;
+import com.lvhongli.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +58,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public Result getLevelMenu(MenuParam menuParam) {
         PageHelper.startPage(menuParam.getOffset(),menuParam.getLimit());
-        List<SysMenu> oneLevelMenu = mapper.getLevelMenu(menuParam.getPid());
+        List<MenuVo> oneLevelMenu = mapper.getLevelMenu(menuParam.getPid());
         return new Result(200,"查询成功！",new PageInfo<>(oneLevelMenu));
     }
 

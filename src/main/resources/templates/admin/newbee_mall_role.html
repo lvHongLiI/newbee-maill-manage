@@ -42,11 +42,10 @@
                             <button class="btn btn-danger" onclick="deleteRole()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除
                             </button>
-                            <button class="btn btn-info" onclick="categoryManage()"><i
-                                    class="fa fa-list"></i>&nbsp;修改/添加菜单
+                            <button class="btn btn-info" onclick="roleMenuEdit()"><i
+                                    class="fa fa-list"></i>&nbsp;修改/添加角色菜单
                             </button>
-                            <br>
-                            <input  class="fa fa-list" type="text" name="roleName" id="roleName" placeholder="请输入名称" th:value="${name}">
+                            <label>角色名称:</label><input  class="fa fa-list" type="text" name="roleName" id="roleName" placeholder="请输入名称" th:value="${name}">
                             <button class="btn btn-info" onclick="query()"><i
                                     class="fa fa-list"></i>&nbsp;查询
                             </button>

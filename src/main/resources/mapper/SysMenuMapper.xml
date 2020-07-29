@@ -4,7 +4,10 @@
  <resultMap id="base" type="com.lvhongli.entity.SysMenu">
      <result column="access_url" property="accessUrl"></result>
  </resultMap>
-
+    <resultMap id="baseVo" type="com.lvhongli.pojo.MenuVo">
+        <result column="access_url" property="accessUrl"></result>
+        <association property="pName" column="pid" select="com.lvhongli.dao.SysMenuMapper.findByName" javaType="string"/>
+    </resultMap>
 
     <delete id="deleteByIdOrPId" >
         delete  from sys_menu where
@@ -33,17 +36,25 @@
         </where>
     </select>
 
-    <select id="getLevelMenu" resultMap="base" parameterType="int">
+    <select id="getLevelMenu" resultMap="baseVo" parameterType="int">
         select * from sys_menu where pid=#{pid};
     </select>
 
     <select id="findByRoleIdExist" resultType="map">
-        select id,name, 0 as 'type' from sys_menu where id in (select menu_id from role_menu_link where role_id=#{id})
+        select id,name,pid, 0 as 'type' from sys_menu where id in (select menu_id from role_menu_link where role_id=#{id})
         union all
-        select id,name, 1 as 'type' from sys_menu where id not in (select menu_id from role_menu_link where role_id=#{id})
+        select id,name,pid, 1 as 'type' from sys_menu where id not in (select menu_id from role_menu_link where role_id=#{id})
     </select>
 
-    <select id="findName" resultType="string">
+    <select id="findNameByRid" resultType="string">
             select name  from sys_menu where id in (select menu_id from role_menu_link where role_id=#{id})
+    </select>
+
+    <select id="findAll" resultMap="base">
+        select * from sys_menu
+    </select>
+
+    <select id="findByName" resultType="string">
+        select name from sys_menu where id=#{id}
     </select>
 </mapper>

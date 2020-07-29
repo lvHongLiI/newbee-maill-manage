@@ -2,6 +2,7 @@ package com.lvhongli.dao;
 
 import com.lvhongli.entity.SysMenu;
 import com.lvhongli.pojo.MenuParam;
+import com.lvhongli.pojo.MenuVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,9 +14,13 @@ public interface SysMenuMapper extends MyBaseMapper<SysMenu> {
 
     List<SysMenu> find(MenuParam menuParam);
 
-    List<SysMenu> getLevelMenu(Integer pid);
+    List<MenuVo> getLevelMenu(Integer pid);
 
     List<Map> findByRoleIdExist(Integer rid);
 
-    List<String> findName(Integer rid);
+    List<String> findNameByRid(Integer rid);
+
+    List<SysMenu> findAll();
+
+    String findByName(Integer id);
 }

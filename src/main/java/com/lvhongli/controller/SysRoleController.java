@@ -58,9 +58,10 @@ public class SysRoleController {
     }
 
     @GetMapping("/findById")
-    @ResponseBody
-    public Result findById(Integer id){
-        return service.findById(id);
+    public String findById(Integer id,HttpServletRequest request){
+        SysRole role = service.findById(id);
+        request.setAttribute("role",role);
+        return "admin/newbee_mall_roleDetails";
     }
 
 }

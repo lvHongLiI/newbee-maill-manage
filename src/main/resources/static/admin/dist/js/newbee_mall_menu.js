@@ -9,7 +9,7 @@ $(function () {
             {label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true},
             {label: '菜单名称', name: 'name', index: 'name', width: 150},
             {label: '访问路径', name: 'accessUrl', index: 'accessUrl', width: 120},
-            {label: '上级菜单', name: 'pid', index: 'pid', width: 120},
+            {label: '上级菜单', name: 'pname', index: 'pname ', width: 120},
             {label: '排序值', name: 'sort', index: 'sort', width: 60}
         ],
         height: 560,
@@ -102,6 +102,7 @@ $('#saveButton').click(function () {
     var accessUrl = $("#accessUrl").val();//访问路径
     var sort = $("#sort").val();//排序值
     var pId = $("#pid").val();//父id
+    var level=$("#level").val();//级别
 
     if (!validCN_ENString2_18(name)) {
         $('#edit-error-msg').css("display", "block");
@@ -111,7 +112,8 @@ $('#saveButton').click(function () {
             "name": name,
             "accessUrl": accessUrl,
             "pid": pId,
-            "sort": sort
+            "sort": sort,
+            "level":level
         };
         var url = '/menu/add';
         var id = getSelectedRowWithoutAlert();

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.lvhongli.dao.RoleMenuLinkMapper;
 import com.lvhongli.dao.SysMenuMapper;
 import com.lvhongli.dao.SysRoleMapper;
+import com.lvhongli.entity.SysMenu;
 import com.lvhongli.entity.SysRole;
 import com.lvhongli.pojo.RoleParam;
 import com.lvhongli.pojo.RoleVo;
@@ -40,7 +41,7 @@ public class SysRoleServiceImpl implements SysRoleService {
                 roleVos= roles.stream().map(s -> {
                 RoleVo vo = new RoleVo();
                 BeanUtils.copyProperties(s, vo);
-                String haveMenu = sysMenuMapper.findName(s.getId()).toString().replaceAll("\\[|\\]", "");
+                String haveMenu = sysMenuMapper.findNameByRid(s.getId()).toString().replaceAll("\\[|\\]", "");
                 vo.setHaveMenu(haveMenu);
                 return vo;
             }).collect(Collectors.toList());
@@ -82,15 +83,15 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Result findById(Integer id) {
-        SysRole sysRole = mapper.findById(id);
+    public SysRole findById(Integer rid) {
+        SysRole sysRole = mapper.selectByPrimaryKey(rid);
         if (sysRole==null)
-            return new Result(500,"根据id找不到对象");
+            return null;
         //拿到该角色下面所有的菜单
-        List<Map> existMenus = sysMenuMapper.findByRoleIdExist(id);
-        if (StringUtil.isNotEmpty(existMenus))
-            sysRole.getMenus().addAll(existMenus);
+        List<Map> menus = sysMenuMapper.findByRoleIdExist(rid);
+        if (StringUtil.isNotEmpty(menus))
+            sysRole.setMenus(menus);
         //判断该菜单是否存在
-        return new Result(200,"查询成功！",sysRole);
+       return sysRole;
     }
 }
