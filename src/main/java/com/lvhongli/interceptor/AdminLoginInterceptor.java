@@ -33,9 +33,9 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
         boolean flag=false;
         String requestServletPath = request.getServletPath();
         Object userId = request.getSession().getAttribute("userId");
-        if (!requestServletPath.startsWith("/admin/login") && null == userId) {
+        if (!requestServletPath.startsWith("/user/login") && null == userId) {
             request.getSession().setAttribute("errorMsg", "请登陆");
-            response.sendRedirect(request.getContextPath() + "/admin/login");
+            response.sendRedirect(request.getContextPath() + "/user/login");
         } else {
             String token = (String) request.getSession().getAttribute("token");
             if (token.equals(tokens.get((Integer) userId))){
@@ -43,7 +43,7 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
                 flag=true;
             }else {
                 request.getSession().setAttribute("errorMsg", "该账户在另一处登录");
-                response.sendRedirect(request.getContextPath() + "/admin/login");
+                response.sendRedirect(request.getContextPath() + "/user/login");
             }
         }
         return flag;

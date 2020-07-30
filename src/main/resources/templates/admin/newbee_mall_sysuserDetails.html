@@ -29,26 +29,26 @@
             <div class="container-fluid">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">角色详情</h3>
-                        <label th:text="${role.roleName}"></label>
-                        <input type="hidden" id="roleId" th:value="${role.id}">
+                        <h3 class="card-title">系统用户详情</h3>
+                        <label th:text="${user.name}"></label>
+                        <input type="hidden" id="userId" th:value="${user.id}">
                     </div> <!-- /.card-body -->
                     <div class="card-body">
                         <div class="grid-btn">
                             <button class="btn btn-info" onclick="save()"><i
                                     class="fa fa-plus"></i>&nbsp;保存
                             </button>
-                            <button class="btn btn-info" onclick="location.href='/role/index'"><i
+                            <button class="btn btn-info" onclick="location.href='/user/index'"><i
                                     class="fa fa-plus"></i>&nbsp;返回
                             </button>
                         </div>
-                    <br>
-                    <div th:each="menu:${role.menus}">
-                        <input  class="" type="checkbox" th:value="${menu.id}" th:checked="${menu.type==0}"><label th:text="${menu.name}"></label>
-                    </div>
-                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
-                        错误信息展示栏。
-                    </div>
+                        <br>
+                        <div th:each="role:${user.roles}">
+                            <input  class="" type="checkbox" th:value="${role.id}" th:checked="${role.type==0}"><label th:text="${role.name}"></label>
+                        </div>
+                        <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                            错误信息展示栏。
+                        </div>
                     </div><!-- /.card-body -->
                 </div>
             </div><!-- /.container-fluid -->
@@ -60,18 +60,18 @@
 </div>
 <script>
     function save() {
-        //1.拿到角色id
-        var roleId=$("#roleId").val();
-        //2.再拿到用户选择的菜单id
-        var menus=$('input[type=checkbox]:checked');
+        //1.拿到用户id
+        var userId=$("#userId").val();
+        //2.再拿到用户选择的角色id
+        var roles=$('input[type=checkbox]:checked');
         var arry=[];
-        for(var i=0;i<menus.length;i++){
-            arry.push(menus[i].value)
+        for(var i=0;i<roles.length;i++){
+            arry.push(roles[i].value)
         }
-        $.post('/role/addMenu?roleId='+roleId+'&menusIds='+arry,{},function (data) {
+        $.post('/user/addRole?userId='+userId+'&roleIds='+arry,{},function (data) {
             swal(data.message, {
                 icon: "warning"
-            });
+            })
         },'json');
     }
 </script>

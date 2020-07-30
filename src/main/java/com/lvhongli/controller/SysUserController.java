@@ -9,11 +9,13 @@
 package com.lvhongli.controller;
 
 import com.lvhongli.config.TokenUtil;
-import com.lvhongli.entity.AdminUser;
+import com.lvhongli.entity.SysUser;
 import com.lvhongli.interceptor.AdminLoginInterceptor;
-import com.lvhongli.service.AdminUserService;
 import com.lvhongli.common.ServiceResultEnum;
 
+import com.lvhongli.pojo.Page;
+import com.lvhongli.service.SysUserService;
+import com.lvhongli.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -30,34 +32,61 @@ import javax.servlet.http.HttpSession;
  * @link https://github.com/newbee-ltd
  */
 @Controller
-@RequestMapping("/admin")
-public class AdminUserController {
+@RequestMapping("/user")
+public class SysUserController {
 
     @Autowired
     private TokenUtil tokenUtil;
 
     @Resource
-    private AdminUserService adminUserService;
+    private SysUserService service;
 
     @GetMapping({"/login"})
     public String login() {
         return "admin/login";
     }
 
-    @GetMapping({"/test"})
-    public String test() {
-        return "admin/test";
+
+    @PostMapping("/add")
+    @ResponseBody
+    public Result add(@RequestBody SysUser user){
+        return service.add(user);
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public Result delete(@RequestBody Integer[] ids){
+        return service.delete(ids);
+    }
+
+    @ResponseBody
+    @GetMapping("/find")
+    public Result find(Page page){
+        return service.find(page);
+    }
+
+    @GetMapping("/findById")
+    public String findById(Integer id,HttpServletRequest request){
+        SysUser user=service.findById(id);
+        request.setAttribute("user",user);
+        return "admin/newbee_mall_sysuserDetails";
+    }
+
+    @ResponseBody
+    @PostMapping("/addRole")
+    public Result addRole(Integer userId,Integer[] roleIds){
+        return service.addRoles(userId,roleIds);
     }
 
 
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         request.setAttribute("path", "index");
-        return "admin/index";
+        return "admin/newbee_mall_sysuser";
     }
 
     @PostMapping(value = "/login")
-    public String login(@RequestParam("userName") String userName,
+    public String login(@RequestParam("account") String account,
                         @RequestParam("password") String password,
                         @RequestParam("verifyCode") String verifyCode,
                         HttpSession session) {
@@ -65,7 +94,7 @@ public class AdminUserController {
             session.setAttribute("errorMsg", "验证码不能为空");
             return "admin/login";
         }
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
             session.setAttribute("errorMsg", "用户名或密码不能为空");
             return "admin/login";
         }
@@ -74,7 +103,7 @@ public class AdminUserController {
             session.setAttribute("errorMsg", "验证码错误");
             return "admin/login";
         }
-        AdminUser adminUser = adminUserService.login(userName, password);
+        SysUser adminUser = service.login(account, password);
         if (adminUser != null) {
             String token = tokenUtil.getToken(1, adminUser.getId());
             session.setAttribute("userId", adminUser.getId());
@@ -82,7 +111,7 @@ public class AdminUserController {
             AdminLoginInterceptor.tokens.put(adminUser.getId(),token);
             //session过期时间设置为7200秒 即两小时
             session.setMaxInactiveInterval(60 * 60 * 2);
-            return "redirect:/admin/index";
+            return "redirect:/index";
         } else {
             session.setAttribute("errorMsg", "登陆失败，用户名或者密码错误！");
             return "admin/login";
@@ -92,7 +121,7 @@ public class AdminUserController {
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        AdminUser adminUser = adminUserService.getUserDetailById(loginUserId);
+        SysUser adminUser = service.getUserDetailById(loginUserId);
         if (adminUser == null) {
             return "admin/login";
         }
@@ -110,7 +139,7 @@ public class AdminUserController {
             return "参数不能为空";
         }
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        if (adminUserService.updatePassword(loginUserId, originalPassword, newPassword)) {
+        if (service.updatePassword(loginUserId, originalPassword, newPassword).getResultCode()==200) {
             //修改成功后清空session中的数据，前端控制跳转至登录页
             request.getSession().removeAttribute("loginUserId");
             request.getSession().removeAttribute("loginUser");
@@ -129,7 +158,7 @@ public class AdminUserController {
             return "参数不能为空";
         }
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        if (adminUserService.updateName(loginUserId, loginUserName, nickName)) {
+        if (service.updateName(loginUserId, loginUserName, nickName)) {
             return ServiceResultEnum.SUCCESS.getResult();
         } else {
             return "修改失败";

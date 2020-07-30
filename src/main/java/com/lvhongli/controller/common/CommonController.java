@@ -32,6 +32,13 @@ public class CommonController {
     @Autowired
     private DefaultKaptcha captchaProducer;
 
+
+    @GetMapping({"", "/", "/index", "/index.html"})
+    public String index(HttpServletRequest request) {
+        request.setAttribute("path", "index");
+        return "admin/index";
+    }
+
     @GetMapping("/common/kaptcha")
     public void defaultKaptcha(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         byte[] captchaOutputStream = null;

@@ -8,11 +8,14 @@
  */
 package com.lvhongli.service;
 
-import com.lvhongli.entity.AdminUser;
 
-public interface AdminUserService {
+import com.lvhongli.entity.SysUser;
+import com.lvhongli.pojo.Page;
+import com.lvhongli.util.Result;
 
-    AdminUser login(String userName, String password);
+public interface SysUserService {
+
+    SysUser login(String userName, String password);
 
     /**
      * 获取用户信息
@@ -20,7 +23,7 @@ public interface AdminUserService {
      * @param loginUserId
      * @return
      */
-    AdminUser getUserDetailById(Integer loginUserId);
+    SysUser getUserDetailById(Integer loginUserId);
 
     /**
      * 修改当前登录用户的密码
@@ -30,7 +33,7 @@ public interface AdminUserService {
      * @param newPassword
      * @return
      */
-    Boolean updatePassword(Integer loginUserId, String originalPassword, String newPassword);
+    Result updatePassword(Integer loginUserId, String originalPassword, String newPassword);
 
     /**
      * 修改当前登录用户的名称信息
@@ -42,4 +45,39 @@ public interface AdminUserService {
      */
     Boolean updateName(Integer loginUserId, String loginUserName, String nickName);
 
+    /**
+     *添加系统用户
+     * @param user
+     * @return
+     */
+    Result add(SysUser user);
+
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
+    Result delete(Integer[] ids);
+
+    /**
+     * 查询用户
+     * @return
+     * @param page
+     */
+    Result find(Page page);
+
+    /**
+     * 查询用户详情
+     * @param id
+     * @return
+     */
+    SysUser findById(Integer id);
+
+    /**
+     * 添加角色id
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    Result addRoles(Integer userId, Integer[] roleIds);
 }

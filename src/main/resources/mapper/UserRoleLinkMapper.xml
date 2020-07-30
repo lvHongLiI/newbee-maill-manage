@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.UserRoleLinkMapper">
+    <delete id="deleteById" >
+        delete  from user_role_link where ${column}
+        <foreach collection="ids" item="id" separator="," close=")" open=" in (">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addAll">
+        insert into user_role_link(user_id,role_id)
+        <foreach collection="roleIds" item="roleId" separator="," open="values" close=";">
+            (#{userId},#{roleId})
+        </foreach>
+    </insert>
+
+</mapper>

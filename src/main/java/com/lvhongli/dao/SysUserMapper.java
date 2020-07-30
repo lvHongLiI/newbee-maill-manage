@@ -6,27 +6,22 @@
  * Copyright (c) 2020 十三 all rights reserved.
  * 版权所有，侵权必究！
  */
-package com.lvhongli.entity;
+package com.lvhongli.dao;
+import com.lvhongli.entity.SysUser;
+import org.apache.ibatis.annotations.Param;
 
-import lombok.Data;
-
-import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "sys_user")
-@Data
-public class AdminUser {
+public interface SysUserMapper extends MyBaseMapper<SysUser>{
 
-    private Integer id;
+ int deleteAll(@Param("ids") Integer[] ids);
 
-    private String account;
+    List<SysUser> find();
 
-    private String password;
-
-    private String slat;
-
-    private String name;
-
-    private List<SysRole> roles=new ArrayList();
+    /**
+     * 根据账号查询用户信息
+     * @param account
+     * @return
+     */
+    SysUser findByName(String account);
 }

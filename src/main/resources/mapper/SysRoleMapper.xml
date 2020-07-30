@@ -24,4 +24,14 @@
     <select id="findById" parameterType="int" resultMap="base">
         select * from sys_role where id=#{id}
     </select>
+
+    <select id="findNameByUid" resultType="string" parameterType="int">
+        select role_name from sys_role where id in(select role_id from user_role_link where user_id=#{id})
+    </select>
+
+    <select id="queryExistRole" resultType="map">
+        select id,role_name as 'name', 0 as 'type' from sys_role where id in (select role_id from user_role_link where user_id=#{id})
+        union all
+        select id,role_name as 'name', 1 as 'type' from sys_role where id not in (select role_id from user_role_link where user_id=#{id})
+    </select>
 </mapper>

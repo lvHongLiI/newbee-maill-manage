@@ -6,6 +6,7 @@ import com.lvhongli.util.Result;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysRoleMapper extends MyBaseMapper<SysRole> {
 
@@ -17,4 +18,7 @@ public interface SysRoleMapper extends MyBaseMapper<SysRole> {
     SysRole findById(Integer id);
 
 
+    List<String> findNameByUid(Integer id);
+
+    List<Map> queryExistRole(Integer id);
 }
