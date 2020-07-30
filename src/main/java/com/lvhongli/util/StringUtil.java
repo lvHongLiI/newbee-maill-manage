@@ -1,5 +1,6 @@
 package com.lvhongli.util;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,7 +81,7 @@ public class StringUtil {
 	 * @param list 集合
 	 * @return 空 返回true   不空返回false
 	 */
-	public static boolean isEmpty(List<?> list) {
+	public static boolean isEmpty(Collection<?> list) {
         if (null == list||list.size()==0) {
             return true;
         }

@@ -23,4 +23,20 @@
     from sys_user
     where account=#{account}
   </select>
+
+  <select id="queryHaveMenuId" parameterType="int" resultType="set">
+    select id
+    from menu
+    where id in (
+        select  menu_id
+        from role_menu_link
+        where role_id in (
+            select  role_id
+            from user_role_link
+            where  user_id=#{id}
+        )
+    )
+
+
+  </select>
 </mapper>

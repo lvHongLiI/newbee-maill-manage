@@ -9,6 +9,8 @@
 package com.lvhongli.controller.common;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.lvhongli.entity.SysMenu;
+import com.lvhongli.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 /**
  * @author 13
@@ -32,9 +35,13 @@ public class CommonController {
     @Autowired
     private DefaultKaptcha captchaProducer;
 
+    private SysUserService userService;
 
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        List<SysMenu> menuList=userService.queryMenus(userId);
+        request.getSession().setAttribute("menus",menuList);
         request.setAttribute("path", "index");
         return "admin/index";
     }

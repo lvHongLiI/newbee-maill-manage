@@ -9,9 +9,12 @@
 package com.lvhongli.service;
 
 
+import com.lvhongli.entity.SysMenu;
 import com.lvhongli.entity.SysUser;
 import com.lvhongli.pojo.Page;
 import com.lvhongli.util.Result;
+
+import java.util.List;
 
 public interface SysUserService {
 
@@ -80,4 +83,11 @@ public interface SysUserService {
      * @return
      */
     Result addRoles(Integer userId, Integer[] roleIds);
+
+    /**
+     * 查询当前用户下菜单
+     * @param userId
+     * @return
+     */
+    List<SysMenu> queryMenus(Integer userId);
 }

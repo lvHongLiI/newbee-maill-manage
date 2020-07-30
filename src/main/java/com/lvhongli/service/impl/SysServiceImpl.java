@@ -10,9 +10,11 @@ package com.lvhongli.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.lvhongli.dao.SysMenuMapper;
 import com.lvhongli.dao.SysRoleMapper;
 import com.lvhongli.dao.SysUserMapper;
 import com.lvhongli.dao.UserRoleLinkMapper;
+import com.lvhongli.entity.SysMenu;
 import com.lvhongli.entity.SysUser;
 import com.lvhongli.pojo.Page;
 import com.lvhongli.service.SysUserService;
@@ -24,8 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -39,6 +43,9 @@ public class SysServiceImpl implements SysUserService {
 
     @Autowired
     private SysRoleMapper roleMapper;
+
+    @Autowired
+    private SysMenuMapper menuMapper;
 
     @Override
     public SysUser login(String account, String password) {
@@ -148,6 +155,27 @@ public class SysServiceImpl implements SysUserService {
             return new Result(500,"添加失败！");
         }
 
+    }
+
+    @Override
+    public List<SysMenu> queryMenus(Integer userId) {
+        //将所有menus查询出来
+        List<SysMenu> menus = menuMapper.queryPid(0);
+        Set<Integer> haveMenu=mapper.queryHaveMenuId(userId);
+        if (StringUtil.isEmpty(haveMenu))
+            return new LinkedList();
+        for (int i = 0; i < menus.size(); i++) {
+            SysMenu menu = menus.get(0);
+            if (haveMenu.contains(menu.getId())){
+                for (SysMenu child : menu.getChildren()) {
+                    if (!haveMenu.contains(child.getId()))
+                        menus.remove(0);
+                }
+            }else {
+                menus.remove(0);
+            }
+        }
+        return menus;
     }
 
     ;

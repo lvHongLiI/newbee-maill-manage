@@ -23,4 +23,7 @@ public interface SysMenuMapper extends MyBaseMapper<SysMenu> {
     List<SysMenu> findAll();
 
     String findByName(Integer id);
+
+    List<SysMenu> queryPid(Integer id);
+
 }

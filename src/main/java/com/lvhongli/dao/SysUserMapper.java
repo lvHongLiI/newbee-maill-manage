@@ -11,6 +11,7 @@ import com.lvhongli.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SysUserMapper extends MyBaseMapper<SysUser>{
 
@@ -24,4 +25,11 @@ public interface SysUserMapper extends MyBaseMapper<SysUser>{
      * @return
      */
     SysUser findByName(String account);
+
+    /**
+     * 查询该用户拥有的菜单信息
+     * @param userId
+     * @return
+     */
+    Set<Integer> queryHaveMenuId(Integer userId);
 }

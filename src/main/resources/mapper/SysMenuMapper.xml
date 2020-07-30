@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lvhongli.dao.SysMenuMapper">
- <resultMap id="base" type="com.lvhongli.entity.SysMenu">
+    <resultMap id="base" type="com.lvhongli.entity.SysMenu">
      <result column="access_url" property="accessUrl"></result>
- </resultMap>
+    </resultMap>
     <resultMap id="baseVo" type="com.lvhongli.pojo.MenuVo">
         <result column="access_url" property="accessUrl"></result>
         <association property="pName" column="pid" select="com.lvhongli.dao.SysMenuMapper.findByName" javaType="string"/>
+    </resultMap>
+    <resultMap id="baseAll" type="com.lvhongli.entity.SysMenu">
+        <result column="access_url" property="accessUrl"></result>
+        <collection property="children" column="id" select="com.lvhongli.dao.SysMenuMapper.queryPid" ofType="com.lvhongli.entity.SysMenu"></collection>
     </resultMap>
 
     <delete id="deleteByIdOrPId" >
@@ -56,5 +60,9 @@
 
     <select id="findByName" resultType="string">
         select name from sys_menu where id=#{id}
+    </select>
+
+    <select id="queryPid" resultMap="baseAll" parameterType="int">
+        select * from sys_menu where pid=#{pid};
     </select>
 </mapper>
