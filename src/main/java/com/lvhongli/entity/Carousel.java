@@ -9,118 +9,51 @@
 package com.lvhongli.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lvhongli.pojo.Page;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
-public class Carousel {
-    private Integer carouselId;
+@Data
+public class Carousel  extends Page {
+    @ApiModelProperty(value = "主键",example = "1231242432")
+    @Id
+    @GeneratedValue( generator = "JDBC",strategy= GenerationType.IDENTITY)
+    private Integer id;
 
+    @ApiModelProperty(value = "轮播图地址",example = "www，baidu.com")
     private String carouselUrl;
 
+    @ApiModelProperty(value = "跳转地址",example = "www.baidu.com")
     private String redirectUrl;
 
-    private Integer carouselRank;
+    @ApiModelProperty(value = "排序值",example = "1")
+    private Byte sort;
 
-    private Byte isDeleted;
+    @ApiModelProperty(value = "状态",example = "1 新增, 2 启用，3，关闭")
+    private String status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
+    @ApiModelProperty(value = "开始日期",example = "2020-07-27")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private  Date startDate;
 
+    @ApiModelProperty(value = "结束时间",example = "2020-07-27")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    private  Date endDate;
+
+    @ApiModelProperty(value = "创建人",example = "张三")
     private Integer createUser;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
+    @ApiModelProperty(value = "创建时间",example = "2020-07-25")
+    private Date createTime;
 
+    @ApiModelProperty(value = "修改人",example = "呵呵")
     private Integer updateUser;
 
-    public Integer getCarouselId() {
-        return carouselId;
-    }
-
-    public void setCarouselId(Integer carouselId) {
-        this.carouselId = carouselId;
-    }
-
-    public String getCarouselUrl() {
-        return carouselUrl;
-    }
-
-    public void setCarouselUrl(String carouselUrl) {
-        this.carouselUrl = carouselUrl == null ? null : carouselUrl.trim();
-    }
-
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl == null ? null : redirectUrl.trim();
-    }
-
-    public Integer getCarouselRank() {
-        return carouselRank;
-    }
-
-    public void setCarouselRank(Integer carouselRank) {
-        this.carouselRank = carouselRank;
-    }
-
-    public Byte getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Integer createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Integer updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", carouselId=").append(carouselId);
-        sb.append(", carouselUrl=").append(carouselUrl);
-        sb.append(", redirectUrl=").append(redirectUrl);
-        sb.append(", carouselRank=").append(carouselRank);
-        sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", createUser=").append(createUser);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", updateUser=").append(updateUser);
-        sb.append("]");
-        return sb.toString();
-    }
+    @ApiModelProperty(value = "修改时间",example = "2020-07-25")
+    private Date updateTime;
 }

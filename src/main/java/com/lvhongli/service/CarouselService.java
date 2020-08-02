@@ -6,43 +6,47 @@
  * Copyright (c) 2020 十三 all rights reserved.
  * 版权所有，侵权必究！
  */
-package com.lvhongli.dao;
+package com.lvhongli.service;
 
 
 import com.lvhongli.entity.Carousel;
-import com.lvhongli.pojo.CarouselVo;
-import org.apache.ibatis.annotations.Param;
+import com.lvhongli.util.Result;
 
-import java.util.List;
-
-
-public interface CarouselMapper extends MyBaseMapper<Carousel> {
+public interface CarouselService {
 
     /**
-     * 条件查询方法
+     * 查询方法
      * @param carousel
      * @return
      */
-    List<CarouselVo> find(Carousel carousel);
+    Result find(Carousel carousel);
 
     /**
-     * 批量删除方法
+     * 添加方法
+     * @param carousel
+     * @return
+     */
+    Result add(Carousel carousel);
+
+    /**
+     * 修改方法
+     * @param carousel
+     * @return
+     */
+    Result update(Carousel carousel);
+
+    /**
+     * 删除方法
      * @param ids
      * @return
      */
-    int deleteAll(@Param("ids") Integer[] ids);
+    Result delete(Integer[] ids);
 
     /**
      * 修改状态方法
-     * @param id
+     * @param ids
      * @param status
      * @return
      */
-    int statusEdit(@Param("id") Integer id, @Param("status") String status);
-
-    /**
-     * 获取过期的轮播图
-     * @return
-     */
-    List<Carousel> getPast();
+    Result statusEdit(Integer[] ids, String status);
 }

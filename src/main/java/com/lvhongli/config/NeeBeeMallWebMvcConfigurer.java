@@ -27,11 +27,14 @@ public class NeeBeeMallWebMvcConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(adminLoginInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/login")
+                .excludePathPatterns("/swagger-ui.html ")
                 .excludePathPatterns("/user/dist/**")
                 .excludePathPatterns("/user/dist/**")
                 .excludePathPatterns("/common/kaptcha")
                 .excludePathPatterns("/common/kaptcha")
-                .excludePathPatterns("/user/plugins/**");
+                .excludePathPatterns("/user/plugins/**")
+                .excludePathPatterns("/admin/dist/**")
+                .excludePathPatterns("/admin/plugins/**");
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

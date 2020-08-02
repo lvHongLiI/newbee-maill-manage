@@ -34,13 +34,14 @@ public class CommonController {
 
     @Autowired
     private DefaultKaptcha captchaProducer;
-
+    @Autowired
     private SysUserService userService;
 
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         Integer userId = (Integer) request.getSession().getAttribute("userId");
         List<SysMenu> menuList=userService.queryMenus(userId);
+        System.out.println("数据："+menuList);
         request.getSession().setAttribute("menus",menuList);
         request.setAttribute("path", "index");
         return "admin/index";

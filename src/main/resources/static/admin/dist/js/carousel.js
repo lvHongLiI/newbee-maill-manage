@@ -1,13 +1,19 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/carousels/list',
+        url: '/carousel/find',
         datatype: "json",
         colModel: [
-            {label: 'id', name: 'carouselId', index: 'carouselId', width: 50, key: true, hidden: true},
-            {label: '轮播图', name: 'carouselUrl', index: 'carouselUrl', width: 180, formatter: coverImageFormatter},
-            {label: '跳转链接', name: 'redirectUrl', index: 'redirectUrl', width: 120},
-            {label: '排序值', name: 'carouselRank', index: 'carouselRank', width: 120},
-            {label: '添加时间', name: 'createTime', index: 'createTime', width: 120}
+            {label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true},
+            {label: '轮播图', name: 'carouselUrl', index: 'carouselUrl', width: 100, formatter: coverImageFormatter},
+            {label: '跳转链接', name: 'redirectUrl', index: 'redirectUrl', width: 50},
+            {label: '排序值', name: 'sort', index: 'sort', width: 30},
+            {label: '开始日期', name: 'startDate', index: 'startDate', width: 80},
+            {label: '结束日期', name: 'endDate', index: 'endDate', width: 80},
+            {label: '状态', name: 'status', index: 'status', width: 30},
+            {label: '创建人', name: 'createUser', index: 'createTime', width: 50},
+            {label: '创建时间', name: 'createTime', index: 'createTime', width: 100},
+            {label: '修改人', name: 'updateUser', index: 'updateUser', width: 50},
+            {label: '修改时间', name: 'updateTime', index: 'updateTime', width: 100}
         ],
         height: 560,
         rowNum: 10,
@@ -26,13 +32,13 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames: {
-            page: "page",
+            page: "offset",
             rows: "limit",
             order: "order",
         },
         gridComplete: function () {
             //隐藏grid底部滚动条
-            $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+            // $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
 
@@ -45,7 +51,7 @@ $(function () {
     });
 
     new AjaxUpload('#uploadCarouselImage', {
-        action: '/admin/upload/file',
+        action: '/upload/file?type=carousel',
         name: 'file',
         autoSubmit: true,
         responseType: "json",
@@ -86,22 +92,29 @@ function carouselAdd() {
 //绑定modal上的保存按钮
 $('#saveButton').click(function () {
     var redirectUrl = $("#redirectUrl").val();
-    var carouselRank = $("#carouselRank").val();
+    var sort = $("#sort").val();
     var carouselUrl = $('#carouselImg')[0].src;
+    var startDate = $("#startDate").val();
+    var endDate = $("#endDate").val();
     var data = {
         "carouselUrl": carouselUrl,
-        "carouselRank": carouselRank,
-        "redirectUrl": redirectUrl
+        "sort": sort,
+        "status":"1",
+        "redirectUrl": redirectUrl,
+        "startDate":startDate,
+        "endDate":endDate
     };
-    var url = '/admin/carousels/save';
+    var url = '/carousel/add';
     var id = getSelectedRowWithoutAlert();
     if (id != null) {
-        url = '/admin/carousels/update';
+        url = '/carousel/update';
         data = {
-            "carouselId": id,
+            "id": id,
             "carouselUrl": carouselUrl,
-            "carouselRank": carouselRank,
-            "redirectUrl": redirectUrl
+            "sort": sort,
+            "redirectUrl": redirectUrl,
+            "startDate":startDate,
+            "endDate":endDate
         };
     }
     $.ajax({
@@ -138,16 +151,16 @@ function carouselEdit() {
     if (id == null) {
         return;
     }
-    //请求数据
-    $.get("/admin/carousels/info/" + id, function (r) {
-        if (r.resultCode == 200 && r.data != null) {
-            //填充数据至modal
-            $("#carouselImg").attr("src", r.data.carouselUrl);
-            $("#carouselImg").attr("style", "height: 64px;width: 64px;display:block;");
-            $("#redirectUrl").val(r.data.redirectUrl);
-            $("#carouselRank").val(r.data.carouselRank);
-        }
-    });
+    var rowData = $("#jqGrid").jqGrid("getRowData", id);
+    //填充数据至modal
+    var img=rowData.carouselUrl;
+    alert($(img).attr("src"))
+    $("#carouselImg").attr("src", $(img).attr("src"));
+    $("#carouselImg").attr("style", "height: 64px;width: 64px;display:block;");
+    $("#redirectUrl").val(rowData.redirectUrl);
+    $("#sort").val(rowData.sort);
+    $("#startDate").val(rowData.startDate);
+    $("#endDate").val(rowData.endDate);
     $('.modal-title').html('轮播图编辑');
     $('#carouselModal').modal('show');
 }
@@ -167,7 +180,7 @@ function deleteCarousel() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/carousels/delete",
+                    url: "/carousel/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -189,10 +202,54 @@ function deleteCarousel() {
     ;
 }
 
+function statusEdit(type) {
+    var text="";
+    if (type=='2'){
+        text="是否启动轮播图?"
+    }else {
+        text="是否关闭轮播图?"
+    }
+    var ids = getSelectedRows();
+    if (ids == null) {
+        return;
+    }
+    swal({
+        title: "确认弹框",
+        text: text,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    }).then((flag) => {
+        if (flag) {
+            $.ajax({
+                type: "POST",
+                url: "/carousel/statusEdit?status="+type,
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                success: function (r) {
+                    if (r.resultCode == 200) {
+                        swal(r.message, {
+                            icon: "success",
+                        });
+                        $("#jqGrid").trigger("reloadGrid");
+                    } else {
+                        swal(r.message, {
+                            icon: "error",
+                        });
+                    }
+                }
+            });
+        }
+    }
+)
+    ;
+}
 
 function reset() {
-    $("#redirectUrl").val('##');
-    $("#carouselRank").val(0);
+    $("#redirectUrl").val();
+    $("#startDate").val();
+    $("#endDate").val();
+    $("#sort").val(0);
     $("#carouselImg").attr("src", '/admin/dist/img/img-upload.png');
     $("#carouselImg").attr("style", "height: 64px;width: 64px;display:block;");
     $('#edit-error-msg').css("display", "none");

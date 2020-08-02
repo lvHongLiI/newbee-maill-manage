@@ -8,24 +8,32 @@
  */
 package com.lvhongli.service;
 
-import com.lvhongli.entity.Carousel;
-import com.lvhongli.util.PageQueryUtil;
-import com.lvhongli.util.PageResult;
 
-public interface NewBeeMallCarouselService {
+import com.lvhongli.entity.GoodsCategory;
+import com.lvhongli.util.Result;
+
+public interface GoodsCategoryService {
+
     /**
-     * 后台分页
-     *
-     * @param pageUtil
+     * 查询方法
+     * @param param
      * @return
      */
-    PageResult getCarouselPage(PageQueryUtil pageUtil);
+    Result find(GoodsCategory param);
 
-    String saveCarousel(Carousel carousel);
+    /**
+     * 保存方法
+     * @param category
+     * @return
+     */
+    Result save(GoodsCategory category);
 
-    String updateCarousel(Carousel carousel);
+    /**
+     * 删除方法
+     * @param ids
+     * @return
+     */
+    Result delete(Integer[] ids);
 
-    Carousel getCarouselById(Integer id);
 
-    Boolean deleteBatch(Integer[] ids);
 }

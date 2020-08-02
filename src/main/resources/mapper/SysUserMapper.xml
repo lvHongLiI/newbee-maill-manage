@@ -24,9 +24,9 @@
     where account=#{account}
   </select>
 
-  <select id="queryHaveMenuId" parameterType="int" resultType="set">
+  <select id="queryHaveMenuId" parameterType="int" resultType="java.lang.Integer">
     select id
-    from menu
+    from sys_menu
     where id in (
         select  menu_id
         from role_menu_link
@@ -36,7 +36,9 @@
             where  user_id=#{id}
         )
     )
-
-
   </select>
+
+    <select id="findNameById" resultType="string">
+        select name from sys_user where id=#{id}
+    </select>
 </mapper>

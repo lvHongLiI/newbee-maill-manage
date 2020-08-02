@@ -5,7 +5,7 @@
 # Copyright (c) 2020 十三 all rights reserved.
 # 版权所有，侵权必究！
 server:
-  port: 27019
+  port: 80
 spring:
   thymeleaf:
     cache: false
@@ -39,6 +39,8 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # 合并多个DruidDataSource的监控数据
     useGlobalDataSourceStat: true
+  resources: #静态目录配置
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${upload.localtion.linux},file:${upload.localtion.windows}
 # mybatis config
 # logging.level.ltd.newbee.mall.dao=debug
 secret:
@@ -47,6 +49,13 @@ secret:
   subject: all #JWT所面向的用户，是否使用是可选的
   ttlMillis: 300000 #失效时间  时效5分钟   单位：毫秒
   bttlMillis: 14400000 #后台失效时间  时效4小时   单位：毫秒
+upload:
+  localtion:  #配置默认文件保存位置
+    windows: D:/maill-manage/file/
+    linux: /home/maill-manage/file/
+  maxFileSize: 2097152 #单个文件最大KB/MB
+  maxRequestSize: 104857600   #设置总上传数据总大小
+  fileAccessPrefix: http://localhost:80/  #文件访问前缀/域名//149 ip :39.100.9.149
 logging:
   config: classpath:logback.xml
 pagehelper:   #Mybatis分页插件
@@ -54,4 +63,5 @@ pagehelper:   #Mybatis分页插件
   autoDialect: true
   closeConn: false
   reasonable: false #分页参数合理化 默认为true
-
+mybatis:
+  type-handlers-package: com.lvhongli.typeHandler

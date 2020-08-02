@@ -2,10 +2,9 @@ package com.lvhongli.controller;
 
 import com.lvhongli.entity.SysMenu;
 import com.lvhongli.pojo.MenuParam;
-import com.lvhongli.pojo.Page;
 import com.lvhongli.service.SysMenuService;
 import com.lvhongli.util.Result;
-import org.apache.ibatis.annotations.Param;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +15,7 @@ import java.util.Arrays;
 
 @Controller
 @RequestMapping("menu")
+@Api(tags ="系统菜单管理")
 public class SysMenuController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class SysMenuController {
         request.setAttribute("pid",pid);
         request.setAttribute("level",level);
         request.setAttribute("backPid",backPid);
-        return "admin/newbee_mall_menu";
+        return "admin/sys_menu";
     }
 
     @PostMapping("/add")

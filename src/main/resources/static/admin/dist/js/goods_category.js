@@ -1,15 +1,17 @@
 $(function () {
-    var categoryLevel = $("#categoryLevel").val();
-    var parentId = $("#parentId").val();
-
+    var pid = $("#pid").val();
     $("#jqGrid").jqGrid({
-        url: '/admin/categories/list?categoryLevel=' + categoryLevel + '&parentId=' + parentId,
+        url: '/goodsCategory/find?pid=' + pid,
         datatype: "json",
         colModel: [
-            {label: 'id', name: 'categoryId', index: 'categoryId', width: 50, key: true, hidden: true},
-            {label: '分类名称', name: 'categoryName', index: 'categoryName', width: 240},
-            {label: '排序值', name: 'categoryRank', index: 'categoryRank', width: 120},
-            {label: '添加时间', name: 'createTime', index: 'createTime', width: 120}
+            {label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true},
+            {label: '分类名称', name: 'name', index: 'name', width: 40},
+            {label: '上级分类', name: 'pname', index: 'pname', width: 40},
+            {label: '排序值', name: 'sort', index: 'sort', width: 20},
+            {label: '创建人', name: 'createUser', index: 'createUser', width: 20},
+            {label: '创建时间', name: 'createTime', index: 'createTime', width: 50},
+            {label: '修改人', name: 'updateUser', index: 'updateUser', width: 20},
+            {label: '修改时间', name: 'updateTime', index: 'updateTime', width: 50}
         ],
         height: 560,
         rowNum: 10,
@@ -28,7 +30,7 @@ $(function () {
             records: "data.totalCount"
         },
         prmNames: {
-            page: "page",
+            page: "offset",
             rows: "limit",
             order: "order",
         },
@@ -63,31 +65,22 @@ function categoryAdd() {
  * 管理下级分类
  */
 function categoryManage() {
-    var categoryLevel = parseInt($("#categoryLevel").val());
-    var parentId = $("#parentId").val();
+    var back = $("#pid").val();
     var id = getSelectedRow();
     if (id == undefined || id < 0) {
         return false;
     }
-    if (categoryLevel == 1 || categoryLevel == 2) {
-        categoryLevel = categoryLevel + 1;
-        window.location.href = '/admin/categories?categoryLevel=' + categoryLevel + '&parentId=' + id + '&backParentId=' + parentId;
-    } else {
-        swal("无下级分类", {
-            icon: "warning",
-        });
-    }
+    window.location.href = '/goodsCategory/index?&pid='+ id+'&backId='+ back;
+
 }
 
 /**
  * 返回上一层级
  */
 function categoryBack() {
-    var categoryLevel = parseInt($("#categoryLevel").val());
-    var backParentId = $("#backParentId").val();
-    if (categoryLevel == 2 || categoryLevel == 3) {
-        categoryLevel = categoryLevel - 1;
-        window.location.href = '/admin/categories?categoryLevel=' + categoryLevel + '&parentId=' + backParentId + '&backParentId=0';
+    var backId = $("#backId").val();
+    if (backId>=0)  {
+        window.location.href = '/goodsCategory/index?pid=' + backId;
     } else {
         swal("无上级分类", {
             icon: "warning",
@@ -98,29 +91,25 @@ function categoryBack() {
 //绑定modal上的保存按钮
 $('#saveButton').click(function () {
     var categoryName = $("#categoryName").val();
-    var categoryLevel = $("#categoryLevel").val();
-    var parentId = $("#parentId").val();
-    var categoryRank = $("#categoryRank").val();
+    var pid = $("#pid").val();
+    var sort = $("#sort").val();
     if (!validCN_ENString2_18(categoryName)) {
         $('#edit-error-msg').css("display", "block");
         $('#edit-error-msg').html("请输入符合规范的分类名称！");
     } else {
         var data = {
-            "categoryName": categoryName,
-            "categoryLevel": categoryLevel,
-            "parentId": parentId,
-            "categoryRank": categoryRank
+            "name": categoryName,
+            "pid": pid,
+            "sort": sort
         };
-        var url = '/admin/categories/save';
+        var url = '/goodsCategory/save';
         var id = getSelectedRowWithoutAlert();
         if (id != null) {
-            url = '/admin/categories/update';
             data = {
-                "categoryId": id,
-                "categoryName": categoryName,
-                "categoryLevel": categoryLevel,
-                "parentId": parentId,
-                "categoryRank": categoryRank
+                "id":id,
+                "name": categoryName,
+                "pid": pid,
+                "sort": sort
             };
         }
         $.ajax({
@@ -159,11 +148,10 @@ function categoryEdit() {
         return;
     }
     var rowData = $("#jqGrid").jqGrid("getRowData", id);
-    $('.modal-title').html('分类编辑');
+    $('.modal-title').html('商品分类编辑');
     $('#categoryModal').modal('show');
     $("#categoryId").val(id);
-    $("#categoryName").val(rowData.categoryName);
-    $("#categoryRank").val(rowData.categoryRank);
+    $("#sort").val(rowData.sort);
 }
 
 /**
@@ -172,17 +160,17 @@ function categoryEdit() {
  * 不过代码我也写了一部分，如果想保留删除功能的话可以在此代码的基础上进行修改。
  */
 function deleteCagegory() {
-    swal("未开放", {
-        icon: "warning",
-    });
-    return;
+    // swal("未开放", {
+    //     icon: "warning",
+    // });
+    // return;
     var ids = getSelectedRows();
     if (ids == null) {
         return;
     }
     swal({
         title: "确认弹框",
-        text: "确认要删除数据吗?",
+        text: "该操作会删除选择的分类和其子分类，确认要删除数据吗?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -190,7 +178,7 @@ function deleteCagegory() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/categories/delete",
+                    url: "/goodsCategory/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -215,6 +203,6 @@ function deleteCagegory() {
 
 function reset() {
     $("#categoryName").val('');
-    $("#categoryRank").val(0);
+    $("#sort").val(0);
     $('#edit-error-msg').css("display", "none");
 }

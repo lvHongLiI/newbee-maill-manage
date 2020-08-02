@@ -90,13 +90,13 @@ $('#saveButton').click(function () {
         data: JSON.stringify(data),
         success: function (result) {
             if (result.resultCode == 200) {
-                $('#categoryModal').modal('hide');
+                $('#userModal').modal('hide');
                 swal("保存成功", {
                     icon: "success",
                 });
                 reload();
             } else {
-                $('#categoryModal').modal('hide');
+                $('#userModal').modal('hide');
                 swal(result.message, {
                     icon: "error",
                 });

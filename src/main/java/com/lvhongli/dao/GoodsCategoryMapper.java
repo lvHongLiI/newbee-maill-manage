@@ -9,31 +9,32 @@
 package com.lvhongli.dao;
 
 import com.lvhongli.entity.GoodsCategory;
-import com.lvhongli.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface GoodsCategoryMapper {
-    int deleteByPrimaryKey(Long categoryId);
 
-    int insert(GoodsCategory record);
+public interface GoodsCategoryMapper extends MyBaseMapper<GoodsCategory> {
 
-    int insertSelective(GoodsCategory record);
+    /**
+     * 查询方法
+     * @param category
+     * @return
+     */
+    List<GoodsCategory> find(GoodsCategory category);
 
-    GoodsCategory selectByPrimaryKey(Long categoryId);
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    int deleteAll(@Param("ids") Integer[] ids);
 
-    GoodsCategory selectByLevelAndName(@Param("categoryLevel") Byte categoryLevel, @Param("categoryName") String categoryName);
+    /**
+     * 根据id查询名称
+     * @param id
+     * @return
+     */
+    String findNameById(Integer id);
 
-    int updateByPrimaryKeySelective(GoodsCategory record);
-
-    int updateByPrimaryKey(GoodsCategory record);
-
-    List<GoodsCategory> findGoodsCategoryList(PageQueryUtil pageUtil);
-
-    int getTotalGoodsCategories(PageQueryUtil pageUtil);
-
-    int deleteBatch(Integer[] ids);
-
-    List<GoodsCategory> selectByLevelAndParentIdsAndNumber(@Param("parentIds") List<Long> parentIds, @Param("categoryLevel") int categoryLevel, @Param("number") int number);
 }

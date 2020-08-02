@@ -32,4 +32,11 @@ public interface SysUserMapper extends MyBaseMapper<SysUser>{
      * @return
      */
     Set<Integer> queryHaveMenuId(Integer userId);
+
+   /**
+    * 根据id查询用户名称
+    * @param id
+    * @return
+    */
+   String findNameById(Integer id);
 }

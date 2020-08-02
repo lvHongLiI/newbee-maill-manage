@@ -165,7 +165,7 @@ public class SysServiceImpl implements SysUserService {
         if (StringUtil.isEmpty(haveMenu))
             return new LinkedList();
         for (int i = 0; i < menus.size(); i++) {
-            SysMenu menu = menus.get(0);
+            SysMenu menu = menus.get(i);
             if (haveMenu.contains(menu.getId())){
                 for (SysMenu child : menu.getChildren()) {
                     if (!haveMenu.contains(child.getId()))

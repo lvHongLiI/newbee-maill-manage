@@ -16,6 +16,7 @@ import com.lvhongli.common.ServiceResultEnum;
 import com.lvhongli.pojo.Page;
 import com.lvhongli.service.SysUserService;
 import com.lvhongli.util.Result;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("/user")
+@Api(tags ="系统用户管理")
 public class SysUserController {
 
     @Autowired
@@ -69,7 +71,7 @@ public class SysUserController {
     public String findById(Integer id,HttpServletRequest request){
         SysUser user=service.findById(id);
         request.setAttribute("user",user);
-        return "admin/newbee_mall_sysuserDetails";
+        return "admin/sys_user_details";
     }
 
     @ResponseBody
@@ -82,7 +84,7 @@ public class SysUserController {
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         request.setAttribute("path", "index");
-        return "admin/newbee_mall_sysuser";
+        return "admin/sys_user";
     }
 
     @PostMapping(value = "/login")
@@ -167,9 +169,9 @@ public class SysUserController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("loginUserId");
-        request.getSession().removeAttribute("loginUser");
+        request.getSession().removeAttribute("userId");
+        request.getSession().removeAttribute("menus");
         request.getSession().removeAttribute("errorMsg");
-        return "admin/login";
+        return login();
     }
 }

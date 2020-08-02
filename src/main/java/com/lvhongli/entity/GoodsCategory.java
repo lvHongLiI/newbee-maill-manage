@@ -8,130 +8,42 @@
  */
 package com.lvhongli.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lvhongli.pojo.Page;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
-public class GoodsCategory {
-    private Long categoryId;
+@Data
+public class GoodsCategory extends Page {
 
-    private Byte categoryLevel;
+    @ApiModelProperty(value = "主键",example = "1231242432")
+    @Id
+    @GeneratedValue( generator = "JDBC",strategy= GenerationType.IDENTITY)
+    private Integer id;
 
-    private Long parentId;
+    @ApiModelProperty(value = "分类名称",example = "呵呵")
+    private String name;
 
-    private String categoryName;
+    @ApiModelProperty(value = "父id",example = "123")
+    private Integer pid;
 
-    private Integer categoryRank;
+    @ApiModelProperty(value = "排序值",example = "1")
+    private Byte sort;
 
-    private Byte isDeleted;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
-
+    @ApiModelProperty(value = "创建人",example = "张三")
     private Integer createUser;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
+    @ApiModelProperty(value = "创建时间",example = "2020-07-25")
+    private Date createTime;
 
+    @ApiModelProperty(value = "修改人",example = "呵呵")
     private Integer updateUser;
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
+    @ApiModelProperty(value = "修改时间",example = "2020-07-25")
+    private Date updateTime;
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Byte getCategoryLevel() {
-        return categoryLevel;
-    }
-
-    public void setCategoryLevel(Byte categoryLevel) {
-        this.categoryLevel = categoryLevel;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName == null ? null : categoryName.trim();
-    }
-
-    public Integer getCategoryRank() {
-        return categoryRank;
-    }
-
-    public void setCategoryRank(Integer categoryRank) {
-        this.categoryRank = categoryRank;
-    }
-
-    public Byte getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Integer createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(Integer updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", categoryId=").append(categoryId);
-        sb.append(", categoryLevel=").append(categoryLevel);
-        sb.append(", parentId=").append(parentId);
-        sb.append(", categoryName=").append(categoryName);
-        sb.append(", categoryRank=").append(categoryRank);
-        sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", createUser=").append(createUser);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", updateUser=").append(updateUser);
-        sb.append("]");
-        return sb.toString();
-    }
 }

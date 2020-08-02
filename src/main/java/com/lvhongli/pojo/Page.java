@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Transient;
+
 /**
  * @Title: Page.java 
  * @Package com.amt.configure 
@@ -17,14 +19,17 @@ public class Page {
 
 	// 当前页
 	@ApiModelProperty(value = "页码" ,example = "1")
+	@Transient
 	private Integer offset;
 	
 	// 每页的数量
 	@ApiModelProperty(value = "每页的数量",example = "10")
+	@Transient
 	private Integer limit;
 	
 	// 排序方式
 	@ApiModelProperty(value = "排序方式")
+	@Transient
 	@JsonIgnore
 	private String order;
 	 

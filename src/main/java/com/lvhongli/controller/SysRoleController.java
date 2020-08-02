@@ -3,6 +3,7 @@ import com.lvhongli.entity.SysRole;
 import com.lvhongli.pojo.RoleParam;
 import com.lvhongli.service.SysRoleService;
 import com.lvhongli.util.Result;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("role")
 @Controller
+@Api(tags = "系统角色管理")
 public class SysRoleController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class SysRoleController {
 
     @GetMapping({"/index",""})
     public String index(String name){
-        return "admin/newbee_mall_role";
+        return "admin/sys_role";
     }
 
     @GetMapping("/findAll")
@@ -61,7 +63,7 @@ public class SysRoleController {
     public String findById(Integer id,HttpServletRequest request){
         SysRole role = service.findById(id);
         request.setAttribute("role",role);
-        return "admin/newbee_mall_roleDetails";
+        return "admin/sys_role_details";
     }
 
 }
