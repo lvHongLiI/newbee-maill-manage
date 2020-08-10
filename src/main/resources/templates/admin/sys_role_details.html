@@ -72,7 +72,16 @@
             swal(data.message, {
                 icon: "warning"
             });
+            updateMenus();
         },'json');
+    }
+
+    function updateMenus() {
+        $.post('/updateMenus',{},function (data) {
+            if (data.resultCode==200){
+                location.reload();
+            }
+        })
     }
 </script>
 <!-- jQuery -->

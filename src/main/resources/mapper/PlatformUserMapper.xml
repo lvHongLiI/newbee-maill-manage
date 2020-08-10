@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.PlatformUserMapper">
+
+    <resultMap id="base" type="com.lvhongli.pojo.PlatformUserVo">
+        <id column="id" property="id"/>
+        <result column="open_id" property="openId"/>
+        <result column="head_url" property="headUrl"/>
+        <result column="create_time" property="createTime"/>
+        <result column="status" property="status" typeHandler="com.lvhongli.typeHandler.PlatformUserStatusTypeHandler"/>
+        <result column="type" property="type" typeHandler="com.lvhongli.typeHandler.PlatformUserSTypeHandler"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="base">
+        select * from platform_user
+    </select>
+</mapper>

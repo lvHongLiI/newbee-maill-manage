@@ -85,13 +85,13 @@ public class SysServiceImpl implements SysUserService {
     }
 
     @Override
-    public Boolean updateName(Integer loginUserId, String loginUserName, String nickName) {
+    public Boolean updateName(Integer loginUserId, String account, String name) {
         SysUser adminUser = mapper.selectByPrimaryKey(loginUserId);
         //当前用户非空才可以进行更改
         if (adminUser != null) {
             //设置新名称并修改
-            adminUser.setAccount(loginUserName);
-            adminUser.setName(nickName);
+            adminUser.setAccount(account);
+            adminUser.setName(name);
             if (mapper.updateByPrimaryKeySelective(adminUser) > 0) {
                 //修改成功则返回true
                 return true;
@@ -167,12 +167,13 @@ public class SysServiceImpl implements SysUserService {
         for (int i = 0; i < menus.size(); i++) {
             SysMenu menu = menus.get(i);
             if (haveMenu.contains(menu.getId())){
-                for (SysMenu child : menu.getChildren()) {
-                    if (!haveMenu.contains(child.getId()))
-                        menus.remove(0);
+                List<SysMenu> children = menu.getChildren();
+                for (int j = 0; j < children.size(); j++) {
+                    if (!haveMenu.contains(children.get(j).getId()))
+                        children.remove(i);
                 }
             }else {
-                menus.remove(0);
+                menus.remove(i);
             }
         }
         return menus;

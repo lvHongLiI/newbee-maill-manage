@@ -8,6 +8,7 @@
  */
 package com.lvhongli.interceptor;
 
+import com.lvhongli.entity.SysUser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,13 +33,13 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         boolean flag=false;
         String requestServletPath = request.getServletPath();
-        Object userId = request.getSession().getAttribute("userId");
-        if (!requestServletPath.startsWith("/user/login") && null == userId) {
+        Object user = request.getSession().getAttribute("user");
+        if (!requestServletPath.startsWith("/user/login") && null == user) {
             request.getSession().setAttribute("errorMsg", "请登陆");
             response.sendRedirect(request.getContextPath() + "/user/login");
         } else {
             String token = (String) request.getSession().getAttribute("token");
-            if (token.equals(tokens.get((Integer) userId))){
+            if (token.equals(tokens.get(((SysUser)user).getId()))){
                 request.getSession().removeAttribute("errorMsg");
                 flag=true;
             }else {

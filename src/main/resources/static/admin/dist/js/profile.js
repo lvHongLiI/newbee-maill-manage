@@ -2,19 +2,18 @@ $(function () {
     //修改个人信息
     $('#updateUserNameButton').click(function () {
         $("#updateUserNameButton").attr("disabled",true);
-        var userName = $('#loginUserName').val();
-        var nickName = $('#nickName').val();
-        if (validUserNameForUpdate(userName, nickName)) {
+        var account = $('#account').val();
+        var name = $('#name').val();
+        if (validUserNameForUpdate(account, name)) {
             //ajax提交数据
             var params = $("#userNameForm").serialize();
             $.ajax({
                 type: "POST",
-                url: "/admin/profile/name",
+                url: "/user/profile/name",
                 data: params,
                 success: function (r) {
-                    console.log(r);
                     if (r == 'success') {
-                        alert('修改成功');
+                       location.href='/user/logout'
                     } else {
                         alert('修改失败');
                     }
@@ -31,13 +30,13 @@ $(function () {
             var params = $("#userPasswordForm").serialize();
             $.ajax({
                 type: "POST",
-                url: "/admin/profile/password",
+                url: "/user/profile/password",
                 data: params,
                 success: function (r) {
                     console.log(r);
                     if (r == 'success') {
                         alert('修改成功');
-                        window.location.href = '/admin/login';
+                        window.location.href = '/user/logout';
                     } else {
                         alert('修改失败');
                     }

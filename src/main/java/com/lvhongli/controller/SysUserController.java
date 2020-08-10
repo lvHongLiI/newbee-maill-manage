@@ -100,15 +100,15 @@ public class SysUserController {
             session.setAttribute("errorMsg", "用户名或密码不能为空");
             return "admin/login";
         }
-        String kaptchaCode = session.getAttribute("verifyCode") + "";
-        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
-            session.setAttribute("errorMsg", "验证码错误");
-            return "admin/login";
-        }
+//        String kaptchaCode = session.getAttribute("verifyCode") + "";
+//        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
+//            session.setAttribute("errorMsg", "验证码错误");
+//            return "admin/login";
+//        }
         SysUser adminUser = service.login(account, password);
         if (adminUser != null) {
             String token = tokenUtil.getToken(1, adminUser.getId());
-            session.setAttribute("userId", adminUser.getId());
+            session.setAttribute("user", adminUser);
             session.setAttribute("token", token);
             AdminLoginInterceptor.tokens.put(adminUser.getId(),token);
             //session过期时间设置为7200秒 即两小时
@@ -122,14 +122,14 @@ public class SysUserController {
 
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {
-        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        SysUser adminUser = service.getUserDetailById(loginUserId);
+        SysUser user = (SysUser) request.getSession().getAttribute("user");
+        SysUser adminUser = service.getUserDetailById(user.getId());
         if (adminUser == null) {
             return "admin/login";
         }
         request.setAttribute("path", "profile");
-        request.setAttribute("loginUserName", adminUser.getAccount());
-        request.setAttribute("nickName", adminUser.getName());
+        request.setAttribute("account", adminUser.getAccount());
+        request.setAttribute("name", adminUser.getName());
         return "admin/profile";
     }
 
@@ -140,11 +140,11 @@ public class SysUserController {
         if (StringUtils.isEmpty(originalPassword) || StringUtils.isEmpty(newPassword)) {
             return "参数不能为空";
         }
-        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        if (service.updatePassword(loginUserId, originalPassword, newPassword).getResultCode()==200) {
+        SysUser user = (SysUser) request.getSession().getAttribute("user");
+        if (service.updatePassword(user.getId(), originalPassword, newPassword).getResultCode()==200) {
             //修改成功后清空session中的数据，前端控制跳转至登录页
-            request.getSession().removeAttribute("loginUserId");
-            request.getSession().removeAttribute("loginUser");
+            request.getSession().removeAttribute("user");
+            request.getSession().removeAttribute("menus");
             request.getSession().removeAttribute("errorMsg");
             return ServiceResultEnum.SUCCESS.getResult();
         } else {
@@ -154,13 +154,13 @@ public class SysUserController {
 
     @PostMapping("/profile/name")
     @ResponseBody
-    public String nameUpdate(HttpServletRequest request, @RequestParam("loginUserName") String loginUserName,
-                             @RequestParam("nickName") String nickName) {
-        if (StringUtils.isEmpty(loginUserName) || StringUtils.isEmpty(nickName)) {
+    public String nameUpdate(HttpServletRequest request, @RequestParam("account") String account,
+                             @RequestParam("name") String name) {
+        if (StringUtils.isEmpty(account) || StringUtils.isEmpty(name)) {
             return "参数不能为空";
         }
-        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
-        if (service.updateName(loginUserId, loginUserName, nickName)) {
+        SysUser user = (SysUser) request.getSession().getAttribute("user");
+        if (service.updateName(user.getId(), account, name)) {
             return ServiceResultEnum.SUCCESS.getResult();
         } else {
             return "修改失败";
@@ -169,7 +169,7 @@ public class SysUserController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("userId");
+        request.getSession().removeAttribute("user");
         request.getSession().removeAttribute("menus");
         request.getSession().removeAttribute("errorMsg");
         return login();

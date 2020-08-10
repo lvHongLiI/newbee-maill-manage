@@ -16,8 +16,10 @@ import lombok.Data;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
+@Table(name = "carousel")
 @Data
 public class Carousel  extends Page {
     @ApiModelProperty(value = "主键",example = "1231242432")

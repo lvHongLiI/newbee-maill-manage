@@ -10,10 +10,14 @@ package com.lvhongli.controller.common;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.lvhongli.entity.SysMenu;
+import com.lvhongli.entity.SysUser;
 import com.lvhongli.service.SysUserService;
+import com.lvhongli.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -39,12 +43,20 @@ public class CommonController {
 
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
-        Integer userId = (Integer) request.getSession().getAttribute("userId");
-        List<SysMenu> menuList=userService.queryMenus(userId);
-        System.out.println("数据："+menuList);
+        SysUser user = (SysUser) request.getSession().getAttribute("user");
+        List<SysMenu> menuList=userService.queryMenus(user.getId());
         request.getSession().setAttribute("menus",menuList);
         request.setAttribute("path", "index");
         return "admin/index";
+    }
+
+    @PostMapping("/updateMenus")
+    @ResponseBody
+    public Result updateMenus(HttpServletRequest request){
+        SysUser user = (SysUser) request.getSession().getAttribute("user");
+        List<SysMenu> menuList=userService.queryMenus(user.getId());
+        request.getSession().setAttribute("menus",menuList);
+        return new Result<>(200,"更新菜单成功！");
     }
 
     @GetMapping("/common/kaptcha")

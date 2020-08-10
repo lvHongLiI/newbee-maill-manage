@@ -219,7 +219,7 @@ function deleteCagegory() {
 
 
 function reset() {
-    $("#name").val('');
-    $("#accessUrl").val();
-    $("#sort").val();
+    $("#name").val("");
+    $("#accessUrl").val("");
+    $("#sort").val(0);
 }
