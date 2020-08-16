@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.GoodsOrderMapper">
+
+    <sql id="baseSql">
+        id, trade_number, user_id, platform_user_id,
+        total_price, status, pay_type, delivery_status,
+        ext, create_time, update_time
+    </sql>
+
+    <resultMap id="base" type="com.lvhongli.pojo.GoodsOrderVo">
+        <id property="id" column="id"/>
+        <result property="tradeNumber" column="trade_number"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="status" column="status" typeHandler="com.lvhongli.typeHandler.GoodsOrderStatusTypeHandler"/>
+        <result property="payType" column="pay_type" typeHandler="com.lvhongli.typeHandler.GoodsOrderPayTypeHandler"/>
+        <result property="deliveryStatus" column="delivery_status" typeHandler="com.lvhongli.typeHandler.GoodsOrderDeliveryStatusTypeHandler"/>
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time"/>
+        <association property="goodsUser" column="user_id" select="com.lvhongli.dao.SysUserMapper.findNameById"/>
+        <association property="platformUser" column="platform_user_id" select="com.lvhongli.dao.PlatformUserMapper.findNameById"/>
+    </resultMap>
+    <select id="find" resultMap="base">
+        select <include refid="baseSql"/>
+        from goods_order where  user_id=#{userId}
+        <if test="orderId != null and orderId !='' ">
+            and	instr (order_id,#{orderId}) > 0
+        </if>
+        <if test="status != null ">
+            and	status=#{status}
+        </if>
+        <if test="deliveryStatus != null ">
+            and	delivery_status=#{deliveryStatus}
+        </if>
+        <if test="payType != null ">
+            and	pay_type=#{payType}
+        </if>
+    </select>
+</mapper>

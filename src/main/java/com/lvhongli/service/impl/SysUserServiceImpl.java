@@ -33,7 +33,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class SysServiceImpl implements SysUserService {
+public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private SysUserMapper mapper;
@@ -124,6 +124,7 @@ public class SysServiceImpl implements SysUserService {
         List<SysUser> users=mapper.find();
         if (StringUtil.isNotEmpty(users)){
             users.stream().forEach(s->{
+                s.setType(getType(s.getType()));
                 s.setHaveRole(roleMapper.findNameByUid(s.getId()).toString().replaceAll("\\[|\\]",""));
             });
         }
@@ -177,6 +178,15 @@ public class SysServiceImpl implements SysUserService {
             }
         }
         return menus;
+    }
+
+    private String getType(String s){
+        switch (s){
+            case "2":
+                return "商家用户";
+            default:
+                return "系统用户";
+        }
     }
 
     ;

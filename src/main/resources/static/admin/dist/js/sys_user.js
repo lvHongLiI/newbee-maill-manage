@@ -6,6 +6,7 @@ $(function () {
             {label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true},
             {label: '用户账号', name: 'account', index: 'account', width: 50},
             {label: '用户名称', name: 'name', index: 'name', width: 30},
+            {label: '用户类型', name: 'type', index: 'type', width: 30},
             {label: '用户已有角色', name: 'haveRole', index: 'haveRole', width: 150}
         ],
         height: 560,
@@ -70,6 +71,7 @@ function userAdd() {
 $('#saveButton').click(function () {
     var account = $("#account").val();//拿到账号值
     var name = $("#name").val();//排序值
+    var type=$("#type").val();//用户类型
     var password = $("#password").val();//排序值
     var confirmPassword=$("#confirmPassword").val();//确认密码
     if (password!=confirmPassword){
@@ -80,6 +82,7 @@ $('#saveButton').click(function () {
     var data = {
         "account": account,
         "name": name,
+        "type":type,
         "password": password
     };
     var url = '/user/add';

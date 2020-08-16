@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.GoodsOrderItemMapper">
+
+    <sql id="baseSql">
+        id ,order_id,goods_id,goods_name ,
+         goods_img,selling_price ,goods_count ,create_time
+    </sql>
+
+    <resultMap id="base" type="com.lvhongli.pojo.GoodsOrderItemVo">
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_img" property="goodsImg"/>
+        <result column="selling_price" property="sellingPrice"/>
+        <result column="goods_count" property="goodsCount"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectOrderItem" resultMap="base">
+        select <include refid="baseSql"/>
+        from goods_order_item
+        where order_id=#{orderId}
+    </select>
+</mapper>

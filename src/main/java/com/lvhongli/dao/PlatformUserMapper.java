@@ -10,4 +10,7 @@ public interface PlatformUserMapper extends MyBaseMapper<PlatformUser> {
 
 
     List<PlatformUserVo> findAll();
+
+
+    String findNameById(Integer id);
 }

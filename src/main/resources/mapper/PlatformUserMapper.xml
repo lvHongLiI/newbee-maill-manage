@@ -14,4 +14,10 @@
     <select id="findAll" resultMap="base">
         select * from platform_user
     </select>
+
+    <select id="findNameById" resultType="string">
+        select name
+        from platform_user
+        where id=#{id}
+    </select>
 </mapper>
