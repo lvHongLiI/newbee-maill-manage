@@ -1,7 +1,7 @@
 $(function () {
     var pid = $("#pid").val();
     $("#jqGrid").jqGrid({
-        url: '/goodsCategory/find?pid=' + pid,
+        url: '/goodsCategory/find?pid='+ pid,
         datatype: "json",
         colModel: [
             {label: 'id', name: 'id', index: 'id', width: 50, key: true, hidden: true},
@@ -65,13 +65,11 @@ function categoryAdd() {
  * 管理下级分类
  */
 function categoryManage() {
-    var back = $("#pid").val();
     var id = getSelectedRow();
     if (id == undefined || id < 0) {
         return false;
     }
-    window.location.href = '/goodsCategory/index?&pid='+ id+'&backId='+ back;
-
+    window.location.href = '/goodsCategory/index?&pid='+ id;
 }
 
 /**

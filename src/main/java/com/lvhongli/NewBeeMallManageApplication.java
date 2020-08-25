@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
  */
 @MapperScan("com.lvhongli.dao")
 @SpringBootApplication
-
 public class NewBeeMallManageApplication {
 
     public static void main(String[] args) {

@@ -53,8 +53,6 @@ public class GoodsOrderController {
     @GetMapping("/find")
     @ResponseBody
     public Result find(GoodsOrderParam orderParam, HttpServletRequest request){
-        SysUser user = (SysUser) request.getSession().getAttribute("user");
-        orderParam.setUserId(user.getId());
         return service.find(orderParam);
     }
 

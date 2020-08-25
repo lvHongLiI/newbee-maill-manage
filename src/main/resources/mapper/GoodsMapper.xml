@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvhongli.dao.GoodsMapper">
+
+    <select id="find">
+        select * from  goods
+        <where>
+            <if test="goodsName!=null and goodsName!=''">
+                and	instr (goods_name,#{goodsName}) > 0
+            </if>
+            <if test="">
+
+            </if>
+        </where>
+    </select>
+</mapper>

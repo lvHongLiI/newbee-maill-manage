@@ -37,4 +37,10 @@ public interface GoodsCategoryMapper extends MyBaseMapper<GoodsCategory> {
      */
     String findNameById(Integer id);
 
+    /**
+     * 查询父id
+     * @param id
+     * @return
+     */
+    Integer getPid(Integer id);
 }

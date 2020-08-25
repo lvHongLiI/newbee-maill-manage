@@ -71,7 +71,6 @@ function userAdd() {
 $('#saveButton').click(function () {
     var account = $("#account").val();//拿到账号值
     var name = $("#name").val();//排序值
-    var type=$("#type").val();//用户类型
     var password = $("#password").val();//排序值
     var confirmPassword=$("#confirmPassword").val();//确认密码
     if (password!=confirmPassword){
@@ -82,7 +81,6 @@ $('#saveButton').click(function () {
     var data = {
         "account": account,
         "name": name,
-        "type":type,
         "password": password
     };
     var url = '/user/add';

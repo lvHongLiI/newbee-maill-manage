@@ -48,4 +48,7 @@
         </foreach>
     </delete>
 
+    <select id="getPid" resultType="int">
+        select pid from goods_category where id=#{id}
+    </select>
 </mapper>

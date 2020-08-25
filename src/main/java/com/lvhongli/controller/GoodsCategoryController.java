@@ -8,6 +8,7 @@
  */
 package com.lvhongli.controller;
 import com.lvhongli.entity.GoodsCategory;
+import com.lvhongli.entity.SysUser;
 import com.lvhongli.service.GoodsCategoryService;
 
 import com.lvhongli.util.Result;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.TreeSet;
 
 
 /**
@@ -37,11 +39,16 @@ public class GoodsCategoryController {
 
 
     @GetMapping({"","/index"})
-    public String index(HttpServletRequest request,Integer pid,Integer backId){
+    public String index(HttpServletRequest request,Integer pid){
+
         if (pid==null)
             pid=0;
-        if (backId==null)
-            backId=-1;
+
+        Integer backId=0;
+        if (pid>0){//说明有该id有父id
+            backId=service.getPid(pid);
+        }
+
         request.setAttribute("pid",pid);
         request.setAttribute("backId",backId);
         return "admin/goods_category";
@@ -56,10 +63,11 @@ public class GoodsCategoryController {
     @PostMapping("/save")
     @ResponseBody
     public Result add(@RequestBody GoodsCategory category,HttpServletRequest request){
+        SysUser user = (SysUser) request.getSession().getAttribute("user");
         if (category.getId()!=null){
-            category.setUpdateUser((Integer) request.getSession().getAttribute("userId"));
+            category.setUpdateUser(user.getId());
         }else {
-            category.setCreateUser((Integer) request.getSession().getAttribute("userId"));
+            category.setCreateUser(user.getId());
         }
         return service.save(category);
     }

@@ -55,5 +55,9 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
         return new Result(500,"删除失败！");
     }
 
-
+    @Override
+    public Integer getPid(Integer id) {
+        Integer pid = mapper.getPid(id);
+        return pid==null?0:pid;
+    }
 }

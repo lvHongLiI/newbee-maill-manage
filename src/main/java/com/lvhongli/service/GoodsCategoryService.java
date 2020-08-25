@@ -10,7 +10,10 @@ package com.lvhongli.service;
 
 
 import com.lvhongli.entity.GoodsCategory;
+import com.lvhongli.pojo.GoodsCategoryVo;
 import com.lvhongli.util.Result;
+
+import java.util.List;
 
 public interface GoodsCategoryService {
 
@@ -36,4 +39,12 @@ public interface GoodsCategoryService {
     Result delete(Integer[] ids);
 
 
+    Integer getPid(Integer id);
+
+    /**
+     *
+     * @param pid 根据pid查询分类列表
+     * @return
+     */
+    List<GoodsCategoryVo> selectByPid(int pid);
 }

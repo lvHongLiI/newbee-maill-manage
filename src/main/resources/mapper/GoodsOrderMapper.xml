@@ -3,7 +3,7 @@
 <mapper namespace="com.lvhongli.dao.GoodsOrderMapper">
 
     <sql id="baseSql">
-        id, trade_number, user_id, platform_user_id,
+        id, trade_number, platform_user_id,
         total_price, status, pay_type, delivery_status,
         ext, create_time, update_time
     </sql>
@@ -17,12 +17,11 @@
         <result property="deliveryStatus" column="delivery_status" typeHandler="com.lvhongli.typeHandler.GoodsOrderDeliveryStatusTypeHandler"/>
         <result property="createTime" column="create_time" />
         <result property="updateTime" column="update_time"/>
-        <association property="goodsUser" column="user_id" select="com.lvhongli.dao.SysUserMapper.findNameById"/>
         <association property="platformUser" column="platform_user_id" select="com.lvhongli.dao.PlatformUserMapper.findNameById"/>
     </resultMap>
     <select id="find" resultMap="base">
         select <include refid="baseSql"/>
-        from goods_order where  user_id=#{userId}
+        from goods_order where  1=1
         <if test="orderId != null and orderId !='' ">
             and	instr (order_id,#{orderId}) > 0
         </if>

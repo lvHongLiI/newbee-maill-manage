@@ -6,9 +6,6 @@ import lombok.Data;
 @Data
 public class GoodsOrderParam extends Page{
 
-    @ApiModelProperty(value = "商家id",example = "1")
-    private Integer userId;
-
     @ApiModelProperty(value = "订单id",example = "1")
     private String orderId;
 

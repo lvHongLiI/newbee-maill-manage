@@ -32,8 +32,10 @@ public class SysUser {
     @ApiModelProperty(value = "账号",example = "123")
     private String account;
 
+
     @ApiModelProperty(value = "密码",example = "afa")
     private String password;
+
 
     @ApiModelProperty(value = "密码盐",example = "adfa")
     private String slat;
@@ -41,8 +43,6 @@ public class SysUser {
     @ApiModelProperty(value = "用户名称",example = "顶级用户")
     private String name;
 
-    @ApiModelProperty(value = "用户类型: 1系统用户 2商家用户",example = "1")
-    private String type;
 
     @Transient
     @ApiModelProperty(value = "用户拥有角色",example = "admin,root")

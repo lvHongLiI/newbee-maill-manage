@@ -55,6 +55,6 @@
     </update>
 
     <select id="getPast" resultType="com.lvhongli.entity.Carousel">
-        select  * from carousel where status!='4' and update_date <![CDATA[ < ]]> now();
+        select  * from carousel where status!='4' and update_time <![CDATA[ < ]]> now();
     </select>
 </mapper>

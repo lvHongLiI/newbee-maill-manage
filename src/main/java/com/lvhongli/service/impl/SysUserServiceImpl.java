@@ -118,13 +118,14 @@ public class SysUserServiceImpl implements SysUserService {
         return new Result(200,"删除成功!");
     }
 
+
+
     @Override
     public Result find(Page page) {
         PageHelper.startPage(page.getOffset(),page.getLimit());
         List<SysUser> users=mapper.find();
         if (StringUtil.isNotEmpty(users)){
             users.stream().forEach(s->{
-                s.setType(getType(s.getType()));
                 s.setHaveRole(roleMapper.findNameByUid(s.getId()).toString().replaceAll("\\[|\\]",""));
             });
         }
