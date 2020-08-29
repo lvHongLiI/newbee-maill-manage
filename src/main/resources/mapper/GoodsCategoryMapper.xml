@@ -51,4 +51,8 @@
     <select id="getPid" resultType="int">
         select pid from goods_category where id=#{id}
     </select>
+
+    <select id="selectByPid" resultMap="base">
+        select * from goods_category where pid=#{pid}
+    </select>
 </mapper>
