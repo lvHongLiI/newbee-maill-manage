@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lvhongli.dao.GoodsCategoryMapper;
 import com.lvhongli.entity.GoodsCategory;
+import com.lvhongli.pojo.GoodsCategoryVo;
 import com.lvhongli.service.GoodsCategoryService;
 
 import com.lvhongli.util.Result;
@@ -59,5 +60,10 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     public Integer getPid(Integer id) {
         Integer pid = mapper.getPid(id);
         return pid==null?0:pid;
+    }
+
+    @Override
+    public List<GoodsCategoryVo> selectByPid(int pid) {
+        return mapper.selectByPid(pid);
     }
 }

@@ -5,7 +5,6 @@ import com.lvhongli.pojo.GoodsParam;
 import com.lvhongli.service.GoodsCategoryService;
 import com.lvhongli.service.GoodsService;
 import com.lvhongli.util.Result;
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

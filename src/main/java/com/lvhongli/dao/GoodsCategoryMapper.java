@@ -9,6 +9,7 @@
 package com.lvhongli.dao;
 
 import com.lvhongli.entity.GoodsCategory;
+import com.lvhongli.pojo.GoodsCategoryVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -43,4 +44,11 @@ public interface GoodsCategoryMapper extends MyBaseMapper<GoodsCategory> {
      * @return
      */
     Integer getPid(Integer id);
+
+    /**
+     * 根据父id查询商品分类列表
+     * @param pid
+     * @return
+     */
+    List<GoodsCategoryVo> selectByPid(int pid);
 }
