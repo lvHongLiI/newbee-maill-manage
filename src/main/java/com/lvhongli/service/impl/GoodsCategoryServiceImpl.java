@@ -16,11 +16,14 @@ import com.lvhongli.pojo.GoodsCategoryVo;
 import com.lvhongli.service.GoodsCategoryService;
 
 import com.lvhongli.util.Result;
+import com.lvhongli.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -32,7 +35,7 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public Result find(GoodsCategory category) {
         PageHelper.startPage(category.getOffset(),category.getLimit());
-        List<GoodsCategory> categories=mapper.find(category);
+        List<GoodsCategoryVo> categories=mapper.find(category);
         return new Result(200,"查询成功",new PageInfo<>(categories));
     }
 
@@ -65,5 +68,22 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     @Override
     public List<GoodsCategoryVo> selectByPid(int pid) {
         return mapper.selectByPid(pid);
+    }
+
+
+    @Override
+    public Result selectByCategory(Integer status, Integer pid) {
+        Map<String,Object> map=new HashMap<>();
+        if (status==null||status==pid){
+            return new Result(201,"参数不能为空");
+        }
+        if (status==2){
+            List<GoodsCategoryVo> twoCategorys =selectByPid(pid);
+            map.put("twoCategorys",twoCategorys);
+            pid= StringUtil.isNotEmpty(twoCategorys)?twoCategorys.get(0).getId():-1;
+        }
+        map.put("threeCategorys",selectByPid(pid));
+        return new Result(200,"查询成功！",map);
+
     }
 }

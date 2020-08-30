@@ -1,27 +1,15 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本软件已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 十三 all rights reserved.
- * 版权所有，侵权必究！
- */
-package com.lvhongli.entity;
+package com.lvhongli.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 @Data
-@Table(name = "goods")
-public class Goods {
+public class GoodsVo {
 
     @ApiModelProperty(value = "商品编号（id）",example = "1232221313454354")
-    @Id
     private String id;
 
     @ApiModelProperty(value = "商品名称",example = "华为手机")
@@ -30,8 +18,8 @@ public class Goods {
     @ApiModelProperty(value = "商品标题",example = "非常牛批的手机")
     private String title;
 
-    @ApiModelProperty(value = "商品分类id",example = "1")
-    private Integer categoryId;
+    @ApiModelProperty(value = "商品分类",example = "水果")
+    private String category;
 
     @ApiModelProperty(value = "商品图片",example = "www.baidu.com")
     private String img;
@@ -51,24 +39,21 @@ public class Goods {
     @ApiModelProperty(value = "商品库存数量",example = "123")
     private Integer num;
 
-    @ApiModelProperty(value = "商品销售数量",example = "123")
+    @ApiModelProperty(value = "商品销售数量",example = "12")
     private Integer sellingNum;
 
     @ApiModelProperty(value = "状态 1 上架 2 下架",example = "1")
     private Byte status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间",example = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private String createTime;
 
     @ApiModelProperty(value = "创建人",example = "张三")
-    private Integer createUser;
+    private String createUser;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "修改时间",example = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    private String updateTime;
 
     @ApiModelProperty(value = "修改人",example = "张三")
-    private Integer updateUser;
-
+    private String updateUser;
 }

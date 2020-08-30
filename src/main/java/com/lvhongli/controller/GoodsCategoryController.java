@@ -80,5 +80,10 @@ public class GoodsCategoryController {
     }
 
 
+    @GetMapping("/selectByCategory")
+    @ResponseBody
+    public Result selectByCategory( Integer level,Integer pid){
+        return service.selectByCategory(level,pid);
+    }
 
 }

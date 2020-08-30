@@ -20,7 +20,7 @@
                 <div th:each="menu:${session.menus}" >
                     <li class="nav-header"  th:text="${menu.name}"></li>
                     <li class="nav-item" th:each="item:${menu.children}">
-                        <a th:href="${item.accessUrl}" th:class="${path}=='index'?'nav-link active':'nav-link'">
+                        <a th:href="${item.accessUrl}" th:class="'nav-link'">
                             <i class="nav-icon fa fa-dashboard"></i>
                             <p th:text="${item.name}"></p>
                         </a>

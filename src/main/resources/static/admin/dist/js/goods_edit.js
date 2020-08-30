@@ -18,7 +18,7 @@ $(function () {
     });
 
     new AjaxUpload('#uploadGoodsCoverImg', {
-        action: '/admin/upload/file',
+        action: '/upload/file?type=goods',
         name: 'file',
         autoSubmit: true,
         responseType: "json",
@@ -30,8 +30,8 @@ $(function () {
         },
         onComplete: function (file, r) {
             if (r != null && r.resultCode == 200) {
-                $("#goodsCoverImg").attr("src", r.data);
-                $("#goodsCoverImg").attr("style", "width: 128px;height: 128px;display:block;");
+                $("#img").attr("src", r.data);
+                $("#img").attr("style", "width: 128px;height: 128px;display:block;");
                 return false;
             } else {
                 alert("error");
@@ -41,58 +41,58 @@ $(function () {
 });
 
 $('#confirmButton').click(function () {
-    var goodsName = $('#goodsName').val();
-    var tag = $('#tag').val();
-    var originalPrice = $('#originalPrice').val();
+    var name = $('#name').val();//商品图片
+    var title = $('#title').val();//商品标题
+    var price = $('#price').val();
     var sellingPrice = $('#sellingPrice').val();
-    var stockNum = $('#stockNum').val();
-    var goodsIntro = $('#goodsIntro').val();
-    var goodsCategoryId = $('#levelThree option:selected').val();
-    var goodsSellStatus = $("input[name='goodsSellStatus']:checked").val();
-    var goodsDetailContent = editor.html();
-    if (isNull(goodsCategoryId)) {
+    var num = $('#num').val();
+    var synopsis = $('#synopsis').val();
+    var categoryId = $('#levelThree option:selected').val();
+    var status = $("input[name='status']:checked").val();
+    var detail = editor.html();
+    if (isNull(categoryId)) {
         swal("请选择分类", {
             icon: "error",
         });
         return;
     }
-    if (isNull(goodsName)) {
+    if (isNull(name)) {
         swal("请输入商品名称", {
             icon: "error",
         });
         return;
     }
-    if (!validLength(goodsName, 100)) {
-        swal("请输入商品名称", {
+    if (!validLength(name, 20)) {
+        swal("商品名称过长", {
             icon: "error",
         });
         return;
     }
-    if (isNull(tag)) {
+    if (isNull(title)) {
         swal("请输入商品小标签", {
             icon: "error",
         });
         return;
     }
-    if (!validLength(tag, 100)) {
+    if (!validLength(title, 100)) {
         swal("标签过长", {
             icon: "error",
         });
         return;
     }
-    if (isNull(goodsIntro)) {
+    if (isNull(synopsis)) {
         swal("请输入商品简介", {
             icon: "error",
         });
         return;
     }
-    if (!validLength(goodsIntro, 100)) {
+    if (!validLength(synopsis, 100)) {
         swal("简介过长", {
             icon: "error",
         });
         return;
     }
-    if (isNull(originalPrice) || originalPrice < 1) {
+    if (isNull(price) || price < 1) {
         swal("请输入商品价格", {
             icon: "error",
         });
@@ -104,25 +104,25 @@ $('#confirmButton').click(function () {
         });
         return;
     }
-    if (isNull(stockNum) || sellingPrice < 0) {
+    if (isNull(num) || num < 0) {
         swal("请输入商品库存数", {
             icon: "error",
         });
         return;
     }
-    if (isNull(goodsSellStatus)) {
+    if (isNull(status)) {
         swal("请选择上架状态", {
             icon: "error",
         });
         return;
     }
-    if (isNull(goodsDetailContent)) {
+    if (isNull(detail)) {
         swal("请输入商品介绍", {
             icon: "error",
         });
         return;
     }
-    if (!validLength(goodsDetailContent, 50000)) {
+    if (!validLength(detail, 1000)) {
         swal("商品介绍内容过长", {
             icon: "error",
         });
@@ -132,56 +132,38 @@ $('#confirmButton').click(function () {
 });
 
 $('#saveButton').click(function () {
-    var goodsId = $('#goodsId').val();
-    var goodsCategoryId = $('#levelThree option:selected').val();
-    var goodsName = $('#goodsName').val();
-    var tag = $('#tag').val();
-    var originalPrice = $('#originalPrice').val();
+    var id = $('#id').val();
+    var categoryId = $('#levelThree option:selected').val();
+    var name = $('#name').val();
+    var title = $('#title').val();
+    var price = $('#price').val();
     var sellingPrice = $('#sellingPrice').val();
-    var goodsIntro = $('#goodsIntro').val();
-    var stockNum = $('#stockNum').val();
-    var goodsSellStatus = $("input[name='goodsSellStatus']:checked").val();
-    var goodsDetailContent = editor.html();
-    var goodsCoverImg = $('#goodsCoverImg')[0].src;
-    if (isNull(goodsCoverImg) || goodsCoverImg.indexOf('img-upload') != -1) {
+    var synopsis = $('#synopsis').val();
+    var num = $('#num').val();
+    var status = $("input[name='status']:checked").val();
+    var detail = editor.html();
+    var img = $('#img')[0].src;
+    if (isNull(img) || img.indexOf('img-upload') != -1) {
         swal("封面图片不能为空", {
             icon: "error",
         });
         return;
     }
-    var url = '/admin/goods/save';
+    var url = '/goods/save';
     var swlMessage = '保存成功';
     var data = {
-        "goodsName": goodsName,
-        "goodsIntro": goodsIntro,
-        "goodsCategoryId": goodsCategoryId,
-        "tag": tag,
-        "originalPrice": originalPrice,
+        "id":id,
+        "name": name,
+        "synopsis": synopsis,
+        "categoryId": categoryId,
+        "title": title,
+        "price": price,
         "sellingPrice": sellingPrice,
-        "stockNum": stockNum,
-        "goodsDetailContent": goodsDetailContent,
-        "goodsCoverImg": goodsCoverImg,
-        "goodsCarousel": goodsCoverImg,
-        "goodsSellStatus": goodsSellStatus
+        "num": num,
+        "detail": detail,
+        "img": img,
+        "status": status
     };
-    if (goodsId > 0) {
-        url = '/admin/goods/update';
-        swlMessage = '修改成功';
-        data = {
-            "goodsId": goodsId,
-            "goodsName": goodsName,
-            "goodsIntro": goodsIntro,
-            "goodsCategoryId": goodsCategoryId,
-            "tag": tag,
-            "originalPrice": originalPrice,
-            "sellingPrice": sellingPrice,
-            "stockNum": stockNum,
-            "goodsDetailContent": goodsDetailContent,
-            "goodsCoverImg": goodsCoverImg,
-            "goodsCarousel": goodsCoverImg,
-            "goodsSellStatus": goodsSellStatus
-        };
-    }
     console.log(data);
     $.ajax({
         type: 'POST',//方法类型
@@ -200,7 +182,7 @@ $('#saveButton').click(function () {
                     confirmButtonClass: 'btn btn-success',
                     buttonsStyling: false
                 }).then(function () {
-                    window.location.href = "/admin/goods";
+                    window.location.href = "/goods/index";
                 })
             } else {
                 $('#goodsModal').modal('hide');
@@ -219,29 +201,29 @@ $('#saveButton').click(function () {
 });
 
 $('#cancelButton').click(function () {
-    window.location.href = "/admin/goods";
+    window.location.href = "/goods/index";
 });
 
 $('#levelOne').on('change', function () {
     $.ajax({
-        url: '/admin/categories/listForSelect?categoryId=' + $(this).val(),
+        url: '/goodsCategory/selectByCategory?level=2&pid=' + $(this).val(),
         type: 'GET',
         success: function (result) {
             if (result.resultCode == 200) {
-                var levelTwoSelect = '';
-                var secondLevelCategories = result.data.secondLevelCategories;
-                var length2 = secondLevelCategories.length;
+                var twoSelect = '';
+                var twoCategorys = result.data.twoCategorys;
+                var length2 = twoCategorys.length;
                 for (var i = 0; i < length2; i++) {
-                    levelTwoSelect += '<option value=\"' + secondLevelCategories[i].categoryId + '\">' + secondLevelCategories[i].categoryName + '</option>';
+                    twoSelect += '<option value=\"' + twoCategorys[i].id + '\">' + twoCategorys[i].name + '</option>';
                 }
-                $('#levelTwo').html(levelTwoSelect);
-                var levelThreeSelect = '';
-                var thirdLevelCategories = result.data.thirdLevelCategories;
-                var length3 = thirdLevelCategories.length;
+                $('#levelTwo').html(twoSelect);
+                var threeSelect = '';
+                var threeCategorys = result.data.threeCategorys;
+                var length3 = threeCategorys.length;
                 for (var i = 0; i < length3; i++) {
-                    levelThreeSelect += '<option value=\"' + thirdLevelCategories[i].categoryId + '\">' + thirdLevelCategories[i].categoryName + '</option>';
+                    threeSelect += '<option value=\"' + threeCategorys[i].id + '\">' + threeCategorys[i].name + '</option>';
                 }
-                $('#levelThree').html(levelThreeSelect);
+                $('#levelThree').html(threeSelect);
             } else {
                 swal(result.message, {
                     icon: "error",
@@ -259,17 +241,17 @@ $('#levelOne').on('change', function () {
 
 $('#levelTwo').on('change', function () {
     $.ajax({
-        url: '/admin/categories/listForSelect?categoryId=' + $(this).val(),
+        url: '/goodsCategory/selectByCategory?level=3&pid=' + $(this).val(),
         type: 'GET',
         success: function (result) {
             if (result.resultCode == 200) {
-                var levelThreeSelect = '';
-                var thirdLevelCategories = result.data.thirdLevelCategories;
-                var length = thirdLevelCategories.length;
+                var threeSelect = '';
+                var threeCategorys = result.data.threeCategorys;
+                var length = threeCategorys.length;
                 for (var i = 0; i < length; i++) {
-                    levelThreeSelect += '<option value=\"' + thirdLevelCategories[i].categoryId + '\">' + thirdLevelCategories[i].categoryName + '</option>';
+                    threeSelect += '<option value=\"' + threeCategorys[i].id + '\">' + threeCategorys[i].name + '</option>';
                 }
-                $('#levelThree').html(levelThreeSelect);
+                $('#levelThree').html(threeSelect);
             } else {
                 swal(result.message, {
                     icon: "error",

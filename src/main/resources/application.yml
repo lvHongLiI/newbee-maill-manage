@@ -5,7 +5,7 @@
 # Copyright (c) 2020 十三 all rights reserved.
 # 版权所有，侵权必究！
 server:
-  port: 8080
+  port: 80
 spring:
   thymeleaf:
     cache: false
@@ -55,13 +55,13 @@ upload:
     linux: /home/maill-manage/file/
   maxFileSize: 2097152 #单个文件最大KB/MB
   maxRequestSize: 104857600   #设置总上传数据总大小
-  fileAccessPrefix: http://localhost:80/  #文件访问前缀/域名//149 ip :39.100.9.149
+  fileAccessPrefix: http://localhost:${server.port}/  #文件访问前缀/域名//149 ip :39.100.9.149
 logging:
   config: classpath:logback.xml
 pagehelper:   #Mybatis分页插件
   dialect: com.github.pagehelper.PageHelper
   autoDialect: true
   closeConn: false
-  reasonable: false #分页参数合理化 默认为true
+  reasonable: true #分页参数合理化 默认为true
 mybatis:
   type-handlers-package: com.lvhongli.typeHandler

@@ -6,7 +6,7 @@
         <result column="create_time" property="createTime"></result>
         <association column="create_user" property="createUser" select="com.lvhongli.dao.SysUserMapper.findNameById"></association>
         <association column="update_user" property="updateUser" select="com.lvhongli.dao.SysUserMapper.findNameById" ></association>
-        <association  column="p_id" property="pName" select="com.lvhongli.dao.GoodsCategoryMapper.findNameById"></association>
+        <association column="pid" property="pName" select="com.lvhongli.dao.GoodsCategoryMapper.findNameById"></association>
     </resultMap>
 
     <select id="find"  resultMap="base">

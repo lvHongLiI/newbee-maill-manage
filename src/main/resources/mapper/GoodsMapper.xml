@@ -2,15 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lvhongli.dao.GoodsMapper">
 
-    <select id="find">
+    <resultMap id="basic" type="com.lvhongli.pojo.GoodsVo">
+        <result column="selling_price" property="sellingPrice"/>
+        <result column="selling_num" property="sellingNum"/>
+        <result column="create_time" property="createTime"/>
+        <association column="category_id" property="category" select="com.lvhongli.dao.GoodsCategoryMapper.findNameById"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="basic">
         select * from  goods
         <where>
             <if test="goodsName!=null and goodsName!=''">
                 and	instr (goods_name,#{goodsName}) > 0
             </if>
-            <if test="">
-
-            </if>
         </where>
     </select>
+
+    <update id="statusEdit">
+        update goods set status=#{status} where 1=2
+        <foreach collection="ids" open=" or id in (" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

@@ -47,4 +47,12 @@ public interface GoodsCategoryService {
      * @return
      */
     List<GoodsCategoryVo> selectByPid(int pid);
+
+    /**
+     * 分类查询
+     * @param status
+     * @param pid
+     * @return
+     */
+    Result selectByCategory(Integer status, Integer pid);
 }

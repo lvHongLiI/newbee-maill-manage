@@ -37,8 +37,8 @@ public class GoodsTest {
     GoodsCategoryMapper categoryMapper;
     @Test
     public void test(){
-        int i=22;
-        for (int i1 = 15; i1 <=i; i1++) {
+        int i=31;
+        for (int i1 = 29; i1 <=i; i1++) {
             GoodsCategory category = categoryMapper.selectByPrimaryKey(i1);
             String params=null;
             List<BasicNameValuePair> list = new LinkedList<>();
@@ -68,12 +68,13 @@ public class GoodsTest {
                 goods.setUpdateTime(new Date());
                 goods.setUpdateUser(4);
                 goods.setStatus((byte)(random.nextInt(50)%2==0?1:2));
-                goods.setCount(random.nextInt(50)+20);
+                goods.setNum(random.nextInt(50)+20);
+                goods.setSellingNum(0);
                 goods.setTitle((String) mps.get("title"));
-                goods.setGoodsImg((String) mps.get("imgUrl"));
+                goods.setImg((String) mps.get("imgUrl"));
                 goods.setCategoryId(category.getId());
-                goods.setGoodsPrice(Double.valueOf((String)mps.get("price")) );
-                goods.setSellingPrice("".equals(mps.get("promoPrice"))?goods.getGoodsPrice():Double.valueOf((String) mps.get("promoPrice")));
+                goods.setPrice(Double.valueOf((String)mps.get("price")) );
+                goods.setSellingPrice("".equals(mps.get("promoPrice"))?goods.getPrice():Double.valueOf((String) mps.get("promoPrice")));
                 goodsMapper.insert(goods);
             }
         }

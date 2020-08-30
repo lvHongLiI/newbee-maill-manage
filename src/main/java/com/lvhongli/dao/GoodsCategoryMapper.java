@@ -22,7 +22,7 @@ public interface GoodsCategoryMapper extends MyBaseMapper<GoodsCategory> {
      * @param category
      * @return
      */
-    List<GoodsCategory> find(GoodsCategory category);
+    List<GoodsCategoryVo> find(GoodsCategory category);
 
     /**
      * 批量删除

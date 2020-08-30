@@ -3,6 +3,7 @@ package com.lvhongli.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 
@@ -20,5 +21,6 @@ public class GoodsParam extends  Page {
 
     @ApiModelProperty(value = "状态 1 上架 2 下架",example = "1")
     private Byte status;
+
 
 }

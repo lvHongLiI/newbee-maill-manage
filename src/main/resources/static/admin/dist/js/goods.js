@@ -1,26 +1,30 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/goods/list',
+        url: '/goods/findAll',
         datatype: "json",
         colModel: [
-            {label: '商品编号', name: 'goodsId', index: 'goodsId', width: 60, key: true},
-            {label: '商品名', name: 'goodsName', index: 'goodsName', width: 120},
-            {label: '商品简介', name: 'goodsIntro', index: 'goodsIntro', width: 120},
-            {label: '商品图片', name: 'goodsCoverImg', index: 'goodsCoverImg', width: 120, formatter: coverImageFormatter},
-            {label: '商品库存', name: 'stockNum', index: 'stockNum', width: 60},
-            {label: '商品售价', name: 'sellingPrice', index: 'sellingPrice', width: 60},
+            {label: '商品编号', name: 'id', index: 'id', width: 60, key: true},
+            {label: '分类', name: 'category', index: 'category', width: 40},
+            {label: '商品名', name: 'name', index: 'name', width: 120},
+            {label: '商品简介', name: 'synopsis', index: 'synopsis', width: 120},
+            {label: '商品标题', name: 'title', index: 'title', width: 120},
+            {label: '商品图片', name: 'img', index: 'img', width: 120, formatter: coverImageFormatter},
+            {label: '商品库存', name: 'num', index: 'num', width: 60},
+            {label: '销售数量', name: 'sellingNum', index: 'sellingNum', width: 60},
+            {label: '商品原价', name: 'price', type:'double', index: 'price', width: 60},
+            {label: '商品售价', name: 'sellingPrice', type:'double',index: 'sellingPrice', width: 60},
             {
                 label: '上架状态',
-                name: 'goodsSellStatus',
-                index: 'goodsSellStatus',
+                name: 'status',
+                index: 'status',
                 width: 80,
                 formatter: goodsSellStatusFormatter
             },
             {label: '创建时间', name: 'createTime', index: 'createTime', width: 60}
         ],
         height: 760,
-        rowNum: 20,
-        rowList: [20, 50, 80],
+        rowNum: 5,
+        rowList: [5, 10, 15,20],
         styleUI: 'Bootstrap',
         loadtext: '信息读取中...',
         rownumbers: false,
@@ -30,18 +34,18 @@ $(function () {
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.list",
-            page: "data.currPage",
-            total: "data.totalPage",
-            records: "data.totalCount"
+            page: "data.pageNum",
+            total: "data.pages",
+            records: "data.total"
         },
         prmNames: {
-            page: "page",
+            page: "offset",
             rows: "limit",
             order: "order",
         },
         gridComplete: function () {
             //隐藏grid底部滚动条
-            $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+            //$("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
 
@@ -51,10 +55,10 @@ $(function () {
 
     function goodsSellStatusFormatter(cellvalue) {
         //商品上架状态 0-上架 1-下架
-        if (cellvalue == 0) {
+        if (cellvalue == 1) {
             return "<button type=\"button\" class=\"btn btn-block btn-success btn-sm\" style=\"width: 80%;\">销售中</button>";
         }
-        if (cellvalue == 1) {
+        if (cellvalue == 2) {
             return "<button type=\"button\" class=\"btn btn-block btn-secondary btn-sm\" style=\"width: 80%;\">已下架</button>";
         }
     }
@@ -80,7 +84,7 @@ function reload() {
  * 添加商品
  */
 function addGoods() {
-    window.location.href = "/admin/goods/edit";
+    window.location.href = "/goods/goodsEdit";
 }
 
 /**
@@ -91,7 +95,7 @@ function editGoods() {
     if (id == null) {
         return;
     }
-    window.location.href = "/admin/goods/edit/" + id;
+    window.location.href = "/goods/goodsEdit?id=" + id;
 }
 
 /**
@@ -111,8 +115,8 @@ function putUpGoods() {
     }).then((flag) => {
             if (flag) {
                 $.ajax({
-                    type: "PUT",
-                    url: "/admin/goods/status/0",
+                    type: "POST",
+                    url: "/goods/statusEdit?status=1",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -151,8 +155,8 @@ function putDownGoods() {
     }).then((flag) => {
             if (flag) {
                 $.ajax({
-                    type: "PUT",
-                    url: "/admin/goods/status/1",
+                    type: "POST",
+                    url: "/goods/statusEdit?status=2",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
