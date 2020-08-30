@@ -22,6 +22,12 @@ import com.lvhongli.util.MD5Util;
 import com.lvhongli.util.Result;
 import com.lvhongli.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +36,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class SysUserServiceImpl implements SysUserService {
+
 
     @Resource
     private SysUserMapper mapper;
@@ -47,18 +55,6 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysMenuMapper menuMapper;
 
-    @Override
-    public SysUser login(String account, String password) {
-        //1.根据账号查询是否存在该用户
-        SysUser user=mapper.findByName(account);
-        if (user==null)
-            return null;
-        //2.判断密码是否一致
-        if (user.getPassword().equals(MD5Util.md5(password,user.getSlat()))){
-            return user;
-        }
-        return null;
-    }
 
     @Override
     public SysUser getUserDetailById(Integer loginUserId) {
@@ -70,11 +66,11 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser adminUser = mapper.selectByPrimaryKey(loginUserId);
         //当前用户非空才可以进行更改
         if (adminUser != null) {
-            pastPassword= MD5Util.md5(pastPassword, adminUser.getSlat());
+            pastPassword= MD5Util.md5(pastPassword, MD5Util.SALT);
             //比较原密码是否正确
             if (pastPassword.equals(adminUser.getPassword())) {
                 //设置新密码并修改
-                adminUser.setPassword(MD5Util.md5(newPassword,adminUser.getSlat()));
+                adminUser.setPassword(MD5Util.md5(newPassword,MD5Util.SALT));
                 if (mapper.updateByPrimaryKeySelective(adminUser) > 0) {
                     //修改成功则返回true
                     return new Result(200,"修改成功！");
@@ -102,8 +98,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public Result add(SysUser user) {
-        user.setSlat(MD5Util.getRandomNumber());
-        user.setPassword(MD5Util.md5(user.getPassword(),user.getSlat()));
+        user.setPassword(MD5Util.md5(user.getPassword(),MD5Util.SALT));
         if (mapper.insert(user)==1)
             return new Result(200,"添加成功!");
         return new Result(500,"添加失败");
@@ -119,7 +114,6 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
 
-
     @Override
     public Result find(Page page) {
         PageHelper.startPage(page.getOffset(),page.getLimit());
@@ -131,7 +125,6 @@ public class SysUserServiceImpl implements SysUserService {
         }
         return new Result(200,"查询成功！",new PageInfo(users));
     }
-
 
     @Override
     public SysUser findById(Integer id) {
@@ -172,7 +165,7 @@ public class SysUserServiceImpl implements SysUserService {
                 List<SysMenu> children = menu.getChildren();
                 for (int j = 0; j < children.size(); j++) {
                     if (!haveMenu.contains(children.get(j).getId()))
-                        children.remove(i);
+                        children.remove(j);
                 }
             }else {
                 menus.remove(i);
@@ -180,6 +173,19 @@ public class SysUserServiceImpl implements SysUserService {
         }
         return menus;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
+        System.out.println("进来了");
+        //1.根据账号查询是否存在该用户
+        SysUser sysUser=mapper.findByName(account);
+        if (sysUser==null)
+            return null;
+        User user=new User(sysUser.getAccount(),sysUser.getPassword(),getAuthority(sysUser.getId()));
+        return user;
+    }
+
+
 
     private String getType(String s){
         switch (s){
@@ -190,5 +196,11 @@ public class SysUserServiceImpl implements SysUserService {
         }
     }
 
-    ;
+
+    private List<GrantedAuthority> getAuthority(Integer userId){
+        Set<Map<String, String>> set = menuMapper.selectByUserMenu(userId);
+        System.out.println(set);
+        return set.stream().map(s->{return new SimpleGrantedAuthority(s.get("accessUrl"));}).collect(Collectors.toList());
+    }
+
 }

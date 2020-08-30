@@ -14,6 +14,7 @@ import com.lvhongli.entity.SysUser;
 import com.lvhongli.service.SysUserService;
 import com.lvhongli.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,12 +42,17 @@ public class CommonController {
     @Autowired
     private SysUserService userService;
 
+    @GetMapping({"/login"})
+    public String login() {
+        return "admin/login";
+    }
+
+
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         SysUser user = (SysUser) request.getSession().getAttribute("user");
         List<SysMenu> menuList=userService.queryMenus(user.getId());
         request.getSession().setAttribute("menus",menuList);
-        request.setAttribute("path", "index");
         return "admin/index";
     }
 

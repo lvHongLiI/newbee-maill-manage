@@ -16,8 +16,13 @@ import java.util.UUID;
  * Copyright (c) ©1994-2018 Scjydz.com All Rights Reserved.
  */
 public class MD5Util {
+    public static void main(String[] args) {
+        System.out.println(md5("123456", SALT));
+    }
 	// 加盐参数
     public final static String hashAlgorithmName = "MD5";
+
+    public final static String SALT = "lvhongli";
 
     // 循环次数
     public final static int hashIterations = 1024;

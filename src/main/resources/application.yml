@@ -5,7 +5,7 @@
 # Copyright (c) 2020 十三 all rights reserved.
 # 版权所有，侵权必究！
 server:
-  port: 80
+  port: 8080
 spring:
   thymeleaf:
     cache: false

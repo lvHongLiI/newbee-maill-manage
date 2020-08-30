@@ -13,7 +13,7 @@ $(function () {
                 data: params,
                 success: function (r) {
                     if (r == 'success') {
-                       location.href='/user/logout'
+                       location.href='/logout'
                     } else {
                         alert('修改失败');
                     }
@@ -36,7 +36,7 @@ $(function () {
                     console.log(r);
                     if (r == 'success') {
                         alert('修改成功');
-                        window.location.href = '/user/logout';
+                        window.location.href = '/logout';
                     } else {
                         alert('修改失败');
                     }

@@ -13,12 +13,12 @@ import com.lvhongli.entity.SysMenu;
 import com.lvhongli.entity.SysUser;
 import com.lvhongli.pojo.Page;
 import com.lvhongli.util.Result;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface SysUserService {
+public interface SysUserService extends UserDetailsService {
 
-    SysUser login(String userName, String password);
 
     /**
      * 获取用户信息

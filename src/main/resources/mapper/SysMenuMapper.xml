@@ -36,14 +36,14 @@
             </if>
 
             <if test="accessUrl!=null and accessUrl!=''">
-                name like concat(concat('%', #{accessUrl}), '%');
+                name like concat(concat('%', #{accessUrl}), '%')
             </if>
         </where>
         order by sort
     </select>
 
     <select id="getLevelMenu" resultMap="baseVo" parameterType="int">
-        select * from sys_menu where pid=#{pid} order by sort;
+        select * from sys_menu where pid=#{pid} order by sort
     </select>
 
     <select id="findByRoleIdExist" resultType="map">
@@ -66,5 +66,21 @@
 
     <select id="queryPid" resultMap="baseAll" parameterType="int">
         select * from sys_menu where pid=#{pid} order by sort
+    </select>
+
+
+    <select id="selectByUserMenu" resultType="java.util.Map">
+        SELECT distinct access_url accessUrl
+        FROM
+            sys_menu m ,
+            (SELECT menu_id
+             FROM role_menu_link
+             WHERE role_id in (
+                                SELECT role_id
+                                FROM  user_role_link
+                                WHERE user_id=#{userId}
+                            )
+            ) mm
+        WHERE m.id=mm.menu_id and access_url!=''
     </select>
 </mapper>

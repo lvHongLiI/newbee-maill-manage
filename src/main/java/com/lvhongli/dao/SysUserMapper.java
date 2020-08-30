@@ -7,6 +7,7 @@
  * 版权所有，侵权必究！
  */
 package com.lvhongli.dao;
+import com.lvhongli.entity.SysMenu;
 import com.lvhongli.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,6 +33,7 @@ public interface SysUserMapper extends MyBaseMapper<SysUser>{
      * @return
      */
     Set<Integer> queryHaveMenuId(Integer userId);
+
 
    /**
     * 根据id查询用户名称

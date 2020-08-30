@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface SysMenuMapper extends MyBaseMapper<SysMenu> {
 
@@ -25,5 +26,7 @@ public interface SysMenuMapper extends MyBaseMapper<SysMenu> {
     String findByName(Integer id);
 
     List<SysMenu> queryPid(Integer id);
+
+    Set<Map<String,String>> selectByUserMenu(Integer userId);
 
 }

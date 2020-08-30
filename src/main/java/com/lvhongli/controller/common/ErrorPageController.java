@@ -50,7 +50,9 @@ public class ErrorPageController implements ErrorController {
             return new ModelAndView("error/error_400");
         } else if (HttpStatus.NOT_FOUND == status) {
             return new ModelAndView("error/error_404");
-        } else {
+        } else if (HttpStatus.FORBIDDEN==status){
+            return new ModelAndView("error/error_403");
+        }else {
             return new ModelAndView("error/error_5xx");
         }
     }

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +38,14 @@ public class SysUser {
     private String password;
 
 
-    @ApiModelProperty(value = "密码盐",example = "adfa")
-    private String slat;
-
     @ApiModelProperty(value = "用户名称",example = "顶级用户")
     private String name;
 
+    @ApiModelProperty(value = "创建人",example = "嘿嘿")
+    private Integer create_user;
+
+    @ApiModelProperty(value = "创建时间",example = "2020-08-23 22:11:11")
+    private Date create_time;
 
     @Transient
     @ApiModelProperty(value = "用户拥有角色",example = "admin,root")
