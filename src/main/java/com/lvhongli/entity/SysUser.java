@@ -37,15 +37,17 @@ public class SysUser {
     @ApiModelProperty(value = "密码",example = "afa")
     private String password;
 
+    @ApiModelProperty(value = "密码盐",example = "123124")
+    private String salt;
 
     @ApiModelProperty(value = "用户名称",example = "顶级用户")
     private String name;
 
     @ApiModelProperty(value = "创建人",example = "嘿嘿")
-    private Integer create_user;
+    private Integer createUser;
 
     @ApiModelProperty(value = "创建时间",example = "2020-08-23 22:11:11")
-    private Date create_time;
+    private Date createTime;
 
     @Transient
     @ApiModelProperty(value = "用户拥有角色",example = "admin,root")

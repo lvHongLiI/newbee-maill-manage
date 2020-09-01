@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * @author 13
@@ -44,7 +45,10 @@ public class SysUserController {
 
     @PostMapping("/add")
     @ResponseBody
-    public Result add(@RequestBody SysUser user){
+    public Result add(@RequestBody SysUser user,HttpServletRequest request){
+        SysUser sys = (SysUser) request.getSession().getAttribute("user");
+        user.setCreateUser(sys.getId());
+        user.setCreateTime(new Date());
         return service.add(user);
     }
 
@@ -80,38 +84,6 @@ public class SysUserController {
         return "admin/sys_user";
     }
 
-//    @PostMapping(value = "/login")
-//    public String login(@RequestParam("account") String account,
-//                        @RequestParam("password") String password,
-//                        @RequestParam("verifyCode") String verifyCode,
-//                        HttpSession session) {
-//        if (StringUtils.isEmpty(verifyCode)) {
-//            session.setAttribute("errorMsg", "验证码不能为空");
-//            return "admin/login";
-//        }
-//        if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
-//            session.setAttribute("errorMsg", "用户名或密码不能为空");
-//            return "admin/login";
-//        }
-////        String kaptchaCode = session.getAttribute("verifyCode") + "";
-////        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
-////            session.setAttribute("errorMsg", "验证码错误");
-////            return "admin/login";
-////        }
-//        SysUser adminUser = service.login(account, password);
-//        if (adminUser != null) {
-//            String token = tokenUtil.getToken(1, adminUser.getId());
-//            session.setAttribute("user", adminUser);
-//            session.setAttribute("token", token);
-//            AdminLoginInterceptor.tokens.put(adminUser.getId(),token);
-//            //session过期时间设置为7200秒 即两小时
-//            session.setMaxInactiveInterval(60 * 60 * 2);
-//            return "redirect:/index";
-//        } else {
-//            session.setAttribute("errorMsg", "登陆失败，用户名或者密码错误！");
-//            return "admin/login";
-//        }
-//    }
 
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {

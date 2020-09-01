@@ -6,6 +6,7 @@ import org.apache.shiro.util.ByteSource;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Title: MD5Util.java 
@@ -16,17 +17,11 @@ import java.util.UUID;
  * Copyright (c) ©1994-2018 Scjydz.com All Rights Reserved.
  */
 public class MD5Util {
-    public static void main(String[] args) {
-        System.out.println(md5("123456", SALT));
-    }
 	// 加盐参数
     public final static String hashAlgorithmName = "MD5";
 
-    public final static String SALT = "lvhongli";
-
     // 循环次数
     public final static int hashIterations = 1024;
-  
 
     /**
      * @Description: shiro密码加密工具类

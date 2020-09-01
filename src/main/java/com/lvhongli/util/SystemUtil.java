@@ -1,5 +1,9 @@
 package com.lvhongli.util;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
@@ -37,6 +41,14 @@ public class SystemUtil {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * 获取当前session域
+     * @return
+     */
+    public static HttpSession getSession(){
+       return  ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
     }
 
 }

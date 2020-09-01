@@ -21,6 +21,7 @@ import com.lvhongli.service.SysUserService;
 import com.lvhongli.util.MD5Util;
 import com.lvhongli.util.Result;
 import com.lvhongli.util.StringUtil;
+import com.lvhongli.util.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +31,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
@@ -55,7 +58,6 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysMenuMapper menuMapper;
 
-
     @Override
     public SysUser getUserDetailById(Integer loginUserId) {
         return mapper.selectByPrimaryKey(loginUserId);
@@ -63,14 +65,15 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public Result updatePassword(Integer loginUserId, String pastPassword, String newPassword) {
+        String slat= (String) SystemUtil.getSession().getAttribute("slat");
         SysUser adminUser = mapper.selectByPrimaryKey(loginUserId);
         //当前用户非空才可以进行更改
         if (adminUser != null) {
-            pastPassword= MD5Util.md5(pastPassword, MD5Util.SALT);
+            pastPassword= MD5Util.md5(pastPassword, slat);
             //比较原密码是否正确
             if (pastPassword.equals(adminUser.getPassword())) {
                 //设置新密码并修改
-                adminUser.setPassword(MD5Util.md5(newPassword,MD5Util.SALT));
+                adminUser.setPassword(MD5Util.md5(newPassword,slat));
                 if (mapper.updateByPrimaryKeySelective(adminUser) > 0) {
                     //修改成功则返回true
                     return new Result(200,"修改成功！");
@@ -98,7 +101,8 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public Result add(SysUser user) {
-        user.setPassword(MD5Util.md5(user.getPassword(),MD5Util.SALT));
+        user.setSalt(MD5Util.getRandomNumber());
+        user.setPassword(MD5Util.md5(user.getPassword(),user.getSalt()));
         if (mapper.insert(user)==1)
             return new Result(200,"添加成功!");
         return new Result(500,"添加失败");
@@ -176,11 +180,11 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
-        System.out.println("进来了");
         //1.根据账号查询是否存在该用户
         SysUser sysUser=mapper.findByName(account);
         if (sysUser==null)
             return null;
+        SystemUtil.getSession().setAttribute("salt",sysUser.getSalt());
         User user=new User(sysUser.getAccount(),sysUser.getPassword(),getAuthority(sysUser.getId()));
         return user;
     }
@@ -199,7 +203,6 @@ public class SysUserServiceImpl implements SysUserService {
 
     private List<GrantedAuthority> getAuthority(Integer userId){
         Set<Map<String, String>> set = menuMapper.selectByUserMenu(userId);
-        System.out.println(set);
         return set.stream().map(s->{return new SimpleGrantedAuthority(s.get("accessUrl"));}).collect(Collectors.toList());
     }
 

@@ -12,8 +12,11 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,8 +66,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public boolean matches(CharSequence resPassword, String password) {
-                System.out.println("密码比对:"+MD5Util.md5((String) resPassword,MD5Util.SALT).equals(password));
-                return MD5Util.md5((String) resPassword,MD5Util.SALT).equals(password);
+                String s =(String) ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().getAttribute("slat");
+                System.out.println("slat值:"+s);
+                System.out.println("密码比对:"+MD5Util.md5((String) resPassword,s).equals(password));
+                return MD5Util.md5((String) resPassword,s).equals(password);
             }
         });
     }
