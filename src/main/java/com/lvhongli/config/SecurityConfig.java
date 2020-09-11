@@ -4,6 +4,7 @@ import com.lvhongli.entity.SysMenu;
 import com.lvhongli.service.SysUserService;
 import com.lvhongli.util.MD5Util;
 import com.lvhongli.util.StringUtil;
+import com.lvhongli.util.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -66,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public boolean matches(CharSequence resPassword, String password) {
-                String s =(String) ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().getAttribute("slat");
+                String s = (String) SystemUtil.getSession().getAttribute("salt");
                 System.out.println("slat值:"+s);
                 System.out.println("密码比对:"+MD5Util.md5((String) resPassword,s).equals(password));
                 return MD5Util.md5((String) resPassword,s).equals(password);

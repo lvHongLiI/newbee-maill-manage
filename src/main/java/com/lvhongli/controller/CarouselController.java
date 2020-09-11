@@ -12,6 +12,7 @@ import com.lvhongli.entity.Carousel;
 import com.lvhongli.service.CarouselService;
 
 import com.lvhongli.util.Result;
+import com.lvhongli.util.SystemUtil;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,17 +49,17 @@ public class CarouselController {
 
     @PostMapping("/add")
     @ResponseBody
-    public Result add(@RequestBody Carousel carousel,HttpServletRequest request){
+    public Result add(@RequestBody Carousel carousel){
         carousel.setCreateTime(new Date());
-        carousel.setCreateUser((Integer) request.getSession().getAttribute("userId"));
+        carousel.setCreateUser(SystemUtil.getSysUser().getId());
         return service.add(carousel);
     }
 
     @PostMapping("/update")
     @ResponseBody
-    public Result update(@RequestBody Carousel carousel,HttpServletRequest request){
+    public Result update(@RequestBody Carousel carousel){
         carousel.setUpdateTime(new Date());
-        carousel.setUpdateUser((Integer) request.getSession().getAttribute("userId"));
+        carousel.setUpdateUser(SystemUtil.getSysUser().getId());
         return service.update(carousel);
     }
 

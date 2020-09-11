@@ -17,6 +17,7 @@ import com.lvhongli.service.GoodsCategoryService;
 
 import com.lvhongli.util.Result;
 import com.lvhongli.util.StringUtil;
+import com.lvhongli.util.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,9 +44,11 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     public Result save(GoodsCategory category) {
         int row=0;
         if (category.getId()==null){
+            category.setCreateUser(SystemUtil.getSysUser().getId());
             category.setCreateTime(new Date());
             row=mapper.insert(category);
         }else {
+            category.setUpdateUser(SystemUtil.getSysUser().getId());
             category.setUpdateTime(new Date());
             row=mapper.updateByPrimaryKeySelective(category);
         }

@@ -1,5 +1,6 @@
 package com.lvhongli.util;
 
+import com.lvhongli.entity.SysUser;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -51,4 +52,7 @@ public class SystemUtil {
        return  ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
     }
 
+    public static SysUser getSysUser(){
+       return (SysUser) getSession().getAttribute("user");
+    }
 }

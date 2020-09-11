@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Component
 @EnableScheduling
-public class CarouselHandler {
+public class CarouselJob {
 
     @Autowired
     private CarouselMapper carouselMapper;

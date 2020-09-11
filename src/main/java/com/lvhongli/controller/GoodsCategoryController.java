@@ -12,6 +12,7 @@ import com.lvhongli.entity.SysUser;
 import com.lvhongli.service.GoodsCategoryService;
 
 import com.lvhongli.util.Result;
+import com.lvhongli.util.SystemUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,12 +64,6 @@ public class GoodsCategoryController {
     @PostMapping("/save")
     @ResponseBody
     public Result add(@RequestBody GoodsCategory category,HttpServletRequest request){
-        SysUser user = (SysUser) request.getSession().getAttribute("user");
-        if (category.getId()!=null){
-            category.setUpdateUser(user.getId());
-        }else {
-            category.setCreateUser(user.getId());
-        }
         return service.save(category);
     }
 

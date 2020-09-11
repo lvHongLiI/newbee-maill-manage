@@ -2,6 +2,7 @@ package com.lvhongli.config;
 
 import com.lvhongli.dao.SysUserMapper;
 import com.lvhongli.entity.SysUser;
+import com.lvhongli.util.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,9 +27,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 			throws IOException, ServletException {
 		String account = SecurityContextHolder.getContext().getAuthentication().getName();
 		SysUser user = mapper.findByName(account);
-		HttpSession session = req.getSession();
-		session.setAttribute("user",user);
-		session.setAttribute("error","登录失败！");
+		SystemUtil.getSession().setAttribute("user",user);
 		res.sendRedirect("/index.html");
 	}
 
