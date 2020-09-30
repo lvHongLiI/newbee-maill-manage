@@ -32,13 +32,13 @@ public class GoodsOrder {
 
     @ApiModelProperty(value = "主键",example = "1231242432")
     @Id
-    private String id;//采用雪花算法生成id
+    private Long id;//采用雪花算法生成id
 
     @ApiModelProperty(value = "交易流水号",example = "1231242432")
     private String tradeNumber;
 
     @ApiModelProperty(value = "平台用户id",example = "1234")
-    private String platformUserId;
+    private Long platformUserId;
 
     @ApiModelProperty(value = "总价格",example = "123.43")
     private Double totalPrice;
@@ -46,7 +46,7 @@ public class GoodsOrder {
     @ApiModelProperty(value = "订单地址",example = "")
     private String address;
 
-    @ApiModelProperty(value = "状态 1待支付 2已支付 21支付异常  3已退款 31退款异常  4超时失效",example = "1")
+    @ApiModelProperty(value = "订单状态 1待支付 2已支付 21支付异常 3待退款  4已退款 41退款异常  5超时失效  ",example = "1")
     private Byte status;
 
     @ApiModelProperty(value = "配送状态：1 待配货 2 配货完成 3 已出库 4 运输中 5已验收 6已退货 7关闭订单",example = "1")

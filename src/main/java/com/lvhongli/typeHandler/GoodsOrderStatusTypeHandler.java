@@ -42,10 +42,12 @@ public class GoodsOrderStatusTypeHandler extends BaseTypeHandler<String> {
             case 21:
                 return "支付异常";
             case 3:
+                return "待退款";
+            case 4:
                 return "已退款";
-            case 31:
+            case  41:
                 return "退款异常";
-            case  4:
+            case  5:
                 return "超时失效";
             default:
                 return "";

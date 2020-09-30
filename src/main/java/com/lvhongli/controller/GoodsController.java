@@ -78,7 +78,7 @@ public class GoodsController {
     @PostMapping("/save")
     @ResponseBody
     public Result save(@RequestBody Goods goods){
-        if (StringUtil.isEmpty(goods.getId())){//添加
+        if (goods.getId()!=null){//添加
             goods.setCreateUser(0);
             return service.add(goods);
         }else {//修改

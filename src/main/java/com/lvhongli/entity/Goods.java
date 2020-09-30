@@ -22,7 +22,7 @@ public class Goods {
 
     @ApiModelProperty(value = "商品编号（id）",example = "1232221313454354")
     @Id
-    private String id;
+    private Long id;
 
     @ApiModelProperty(value = "商品名称",example = "华为手机")
     private String name;

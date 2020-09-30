@@ -5,6 +5,7 @@ import com.lvhongli.dao.GoodsCategoryMapper;
 import com.lvhongli.dao.GoodsMapper;
 import com.lvhongli.entity.Goods;
 import com.lvhongli.entity.GoodsCategory;
+import com.lvhongli.pojo.GoodsVo;
 import com.lvhongli.util.HttpUtil;
 import com.lvhongli.util.IDGeneratorUtil;
 import org.apache.http.Consts;
@@ -62,7 +63,7 @@ public class GoodsTest {
                 Map mps= (Map) o;
                 System.out.println(o);
                 Goods goods=new Goods();
-                goods.setId(String.valueOf(idGeneratorUtil.nextId()));
+                goods.setId(idGeneratorUtil.nextId());
                 goods.setCreateTime(new Date());
                 goods.setCreateUser(4);
                 goods.setUpdateTime(new Date());
@@ -79,5 +80,15 @@ public class GoodsTest {
             }
         }
 
+    }
+
+    @Test
+    public void testGoods(){
+        List<GoodsVo> list = goodsMapper.findAll(null);
+        for (GoodsVo vo : list) {
+            String s = JSONObject.toJSONString(vo);
+            System.out.println(s);
+
+        }
     }
 }

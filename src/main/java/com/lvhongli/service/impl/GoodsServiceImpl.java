@@ -50,7 +50,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Result add(Goods goods) {
         int row=0;
-        goods.setId(String.valueOf(idGeneratorUtil.nextId()));
+        goods.setId(idGeneratorUtil.nextId());
         goods.setCreateTime(new Date());
         goods.setSellingNum(0);
         row=goodsMapper.insert(goods);

@@ -32,8 +32,10 @@ public class GoodsOrderItem {
 
     @ApiModelProperty(value = "主键",example = "1231242432")
     @Id
-    @GeneratedValue( generator = "JDBC",strategy= GenerationType.IDENTITY)
     private Long id;
+
+    @ApiModelProperty(value = "订单id",example = "1232213")
+    private Long orderId;
 
     @ApiModelProperty(value = "商品名称",example = "华为手机")
     private String goodsName;
